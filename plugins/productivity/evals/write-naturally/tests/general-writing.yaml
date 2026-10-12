@@ -1,0 +1,41 @@
+# Fictional nontechnical cases exercise the shared writing guidance.
+- description: '[C11] casual scheduling message stays short and factual'
+  vars:
+    surface: Team chat
+    request: Rewrite this naturally as a short team message. Keep the agreed arrangements.
+    draft: In light of the availability considerations that have arisen, we have reached the conclusion that the workshop should now take place on Thursday at 10 am instead of Tuesday at 2 pm. It will still be in Room 4. Please let me know by Wednesday noon if you cannot attend.
+    pass_criterion: States the agreed move from Tuesday at 2 pm to Thursday at 10 am, keeps Room 4 and the Wednesday noon reply deadline, and reads as a short natural team message.
+    fails_if: Invents a reason for the move, softens the agreed change into a proposal, changes any time or room, omits the reply deadline, or turns it into a formal memo.
+  metadata:
+    id: C11
+    dataset_version: v1-public-fictional
+    group: general-writing
+    surface: chat
+    fixture_origin: Original fictional scenario; no real people or private provenance.
+- description: '[C12] customer update carries only the current position'
+  vars:
+    surface: Customer email
+    request: Write the final concise update for the customer, who has not seen these internal notes.
+    context: The current confirmed delivery date is Friday. The customer only needs the delivery date, the available pickup option and how to request it. No cause or compensation has been confirmed.
+    draft: We initially thought delivery was blocked, then considered Saturday, but withdrew that assessment after our discussion. Delivery is now confirmed for Friday. If the customer needs the order sooner, pickup is available Thursday after 3 pm. They can reply to this email to arrange pickup.
+    pass_criterion: Gives the confirmed Friday delivery and the option to reply to arrange pickup Thursday after 3 pm. The email is self-contained, courteous and brief.
+    fails_if: Narrates internal revisions, mentions a previous delivery date or blockage, invents an apology reason or compensation, weakens the confirmed Friday date, or drops the pickup arrangements.
+  metadata:
+    id: C12
+    dataset_version: v1-public-fictional
+    group: general-writing
+    surface: email
+    fixture_origin: Original fictional scenario; no real people or private provenance.
+- description: '[C13] proposal and firm requirement retain different force'
+  vars:
+    surface: Workshop planning note
+    request: Rewrite this as a natural recommendation to the planning team. The longer session is a proposal; the room capacity is a firm requirement.
+    draft: Extend the workshop from 30 to 45 minutes so each attendee has time to practise. Please keep the room capacity at 12 attendees. That cap is required because there are only 12 practice stations.
+    pass_criterion: Proposes extending the workshop from 30 to 45 minutes with the practice-time reason, while keeping the maximum of 12 attendees as a firm requirement tied to 12 practice stations. It reads as a direct, collaborative recommendation.
+    fails_if: Treats the longer session as already decided, asks permission instead of making the requested proposal, makes the attendance cap optional, loses the counts or reasons, or invents arrangements.
+  metadata:
+    id: C13
+    dataset_version: v1-public-fictional
+    group: general-writing
+    surface: planning-note
+    fixture_origin: Original fictional scenario; no real people or private provenance.

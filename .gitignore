@@ -1,3 +1,6 @@
 node_modules/
 .cache/
 coverage/
+.env
+.promptfoo/
+plugins/**/evals/**/outputs/

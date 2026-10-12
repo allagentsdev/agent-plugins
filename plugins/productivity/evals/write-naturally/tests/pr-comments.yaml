@@ -1,0 +1,36 @@
+# Stable case IDs; v2 replaces private source material with fictional fixtures.
+- description: '[C2] scope recommendation stays collaborative and firm'
+  vars:
+    surface: Pull-request review comment
+    request: Rewrite this scope recommendation in a direct collaborative style, keeping ownership and exclusions clear.
+    draft: |
+      Keep tool execution outside QUEUE-101. TOOLS-202 is responsible for Agent Skills, MCP and the model/tool loop. QUEUE-101 should supply only the queue and the `IJobExecutor` boundary.
+    pass_criterion: |
+      State a firm scope recommendation in collaborative language rather than issuing a bare command or asking for permission. Preserve that tool calling is excluded from QUEUE-101, TOOLS-202 owns Agent Skills, MCP and the model/tool loop, and QUEUE-101 provides only the queue and IJobExecutor boundary.
+      Use concise conversational prose with the recommendation first and the ownership boundary beside it. Equivalent wording is welcome; no particular pronoun, opening phrase or punctuation is required.
+    fails_if: |
+      Leaves the recommendation as a bare imperative; turns the settled scope proposal into an open question; weakens the exclusion into a tentative suggestion; adds approval or implementation commitments; swaps work-item ownership; omits any owned capability or the executor boundary; or expands the short comment into a headed design document.
+  metadata:
+    id: C2
+    group: regression
+    surface: comment
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+- description: '[C3] bounded retry proposal states the decision directly'
+  vars:
+    surface: Pull-request review comment
+    request: State this proposed retry policy directly in a direct collaborative style, preserving every limit and failure action.
+    draft: |
+      Can we use three application attempts: make the initial call, then retry after one second and five seconds, with a ten-second timeout for each call? If all attempts fail, record delivery failure and alert. Leave out a long-lived PostgreSQL retry schedule.
+    pass_criterion: |
+      Present the retry limit as a concrete shared proposal, not a request for permission or a claim that it is already implemented. Keep the policy and its failure consequence together in concise conversational prose.
+      Preserve three total application attempts: the initial call plus retries after one and five seconds, with a ten-second timeout for each call. After those attempts, record delivery failure and alert. Preserve the exclusion of a long-lived PostgreSQL retry schedule.
+      Equivalent wording is welcome. A direct collaborative statement need not begin with We can, and numerals or spelled-out numbers are both valid.
+    fails_if: |
+      Keeps the proposal as an open permission question; turns it into an order to another person; weakens the concrete limits with tentative qualifications; reports the policy as already shipped or verified; changes three attempts into three retries; changes either retry delay or the per-call timeout; omits recording failure or alerting; adds a durable retry schedule; or expands the short comment into a headed design document.
+  metadata:
+    id: C3
+    group: regression
+    surface: comment
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.

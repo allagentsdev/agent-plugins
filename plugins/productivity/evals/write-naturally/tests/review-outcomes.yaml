@@ -1,0 +1,178 @@
+# Fictional regressions for final review comments and proportional review status.
+- description: '[C4] final comment uses the settled assessment'
+  vars:
+    surface: Pull-request review comment
+    request: Rewrite this as the final concise comment for the PR author.
+    context: The team deliberately freezes only external-client contracts. Standalone contracts remain editable.
+      The settled review decision is approval with schema dialect handling as a follow-up. Publish the final assessment
+      to an author who has not seen the drafting discussion.
+    draft: I am withdrawing the standalone freeze blocker after reconsidering our discussion. One issue remains
+      from the two blockers I originally found. We check schemas against 2020-12, but `$schema` can select draft-07
+      for runtime validation. An author uses `prefixItems` on the counts array property to require its first entry to be an integer. A caller sends {"counts":["three"]};
+      both input and output validation accept it under draft-07, while 2020-12 rejects it. We reproduced that behavior.
+      We should enforce one dialect or validate consistently using the declared dialect.
+    pass_criterion: 'Publish only the settled final assessment: one schema dialect follow-up compatible with approval,
+      its concrete caller example, and the proposed consistent-dialect action. Preserve the draft-07 versus 2020-12
+      behavior for both inputs and outputs and the supplied verification. The author can act without knowing the
+      drafting conversation.'
+    fails_if: Retains withdrawal/reconsideration language, counts earlier blockers, mentions the private drafting
+      discussion, repeats the settled freeze policy as an issue, calls the remaining issue blocking, or omits the
+      example or practical next action.
+  metadata:
+    id: C4
+    dataset_version: v2-recipient-context-check
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.
+  assert:
+  - type: llm-rubric
+    metric: final-recipient-context
+    provider:
+      id: openai:codex-sdk
+      config:
+        model: '{{ env.CODEX_JUDGE_MODEL | default("gpt-5.6-luna") }}'
+        model_reasoning_effort: medium
+        working_dir: ./workspace
+        sandbox_mode: read-only
+        approval_policy: never
+        network_access_enabled: false
+        web_search_enabled: false
+        maxRetries: 0
+    value: The recipient has not seen the drafting discussion. Pass only if the output presents the single current
+      schema-dialect follow-up, its caller example and next action. Approval may be stated directly. Any account
+      of an earlier review, withdrawn/resolved blocker, changed assessment or discarded freeze concern fails this
+      check, even if the final approval is correct. A sentence settling an obsolete finding still exposes review
+      history. Judge the meaning, not exact wording, headings or punctuation. On failure, quote the sentence that
+      requires the recipient to know a previous assessment.
+- description: '[C5] technical finding explains what the caller experiences'
+  vars:
+    surface: Pull-request review comment
+    request: Write a concise, natural PR comment from these findings.
+    context: The review has classified this as a non-blocking follow-up. The audience maintains the API and needs
+      to understand what happens to a caller.
+    draft: Both validators first check an embedded schema against the 2020-12 meta-schema. JsonSchema.Net then compiles
+      it with BuildOptions.Dialect=Draft202012, but an explicit `$schema` overrides that default. A reviewed-library
+      reproduction used an object schema declaring draft-07, with a counts array and prefixItems requiring its first
+      entry to be an integer. The schema was admitted, and {"counts":["three"]} passed request and result validation.
+      Changing only the declaration to 2020-12 caused rejection. Draft-07 does not implement prefixItems. A fix
+      can restrict the supported dialect or meta-validate using the declared dialect.
+    pass_criterion: State the follow-up directly. Explain in concise conversational prose that the author intends
+      an integer array entry but the caller can send a string and have it accepted because draft-07 ignores prefixItems.
+      Keep the default/override mismatch, both input and output impact, the verified 2020-12 rejection and either
+      supported fix. Exact code identifiers are optional when the behavior is clear.
+    fails_if: Describes only BuildOptions or meta-schema machinery, leaves the caller to infer the accepted invalid
+      value, claims all validation is disabled, labels the concern blocking, invents an incident or reproduction,
+      or expands into a headed design document.
+  metadata:
+    id: C5
+    dataset_version: v1-public-fictional
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.
+- description: '[C6] one shared defect stays one concern across repositories'
+  vars:
+    surface: Pull-request review comment
+    request: Turn these findings into one concise paired-PR review comment.
+    context: Both repositories implement the same validation pattern. The supplied review decision is to approve
+      with a follow-up.
+    draft: 'Finding A: the schema publisher checks authored schemas as 2020-12 but allows `$schema` to override
+      the runtime dialect. Finding B: the request executor has the same pattern. Both arise from the same default-versus-explicit
+      declaration mismatch and need the same supported-dialect decision. With draft-07 and prefixItems requiring
+      an integer, {"counts":["three"]} passes both request and result validation. We reproduced acceptance in both
+      repositories; using 2020-12 rejects the data.'
+    pass_criterion: Present one shared schema dialect issue affecting both repositories, with the concrete caller
+      behavior and a coordinated fix. Preserve the non-blocking follow-up status. The scope across repositories
+      must remain clear without counting each location as a separate defect.
+    fails_if: Presents two independent issues or blockers because there are two repositories, drops either location,
+      claims the defect is already fixed, loses the example, or changes the agreed follow-up status.
+  metadata:
+    id: C6
+    dataset_version: v1-public-fictional
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.
+- description: '[C7] unsettled compatibility policy stays an open question'
+  vars:
+    surface: Pull-request review comment
+    request: Write a short PR comment from these notes, keeping the distinction between observed behavior and the
+      unresolved requirement.
+    context: No requirement has been agreed to freeze standalone contracts. The comparison gate intentionally protects
+      contracts used by an external client. The author may intend standalone contracts to remain mutable.
+    draft: The published-version comparison skips contracts without an external-client sibling. Structural/schema
+      validation and runtime input/output validation still run. Changing a standalone v1 field limit from 1 to 2
+      produces no compatibility finding. I initially called that a blocker, but the standalone compatibility policy
+      is unresolved.
+    pass_criterion: Ask whether standalone versions are intended to be immutable, grounding the question in the
+      observed limit change and missing compatibility finding. Preserve that ordinary contract and runtime validation
+      still run. Keep it an unresolved policy question, without treating mutation as proof of a missing requirement
+      or reporting the drafting history.
+    fails_if: Calls standalone contracts unvalidated, declares a blocker without an agreed requirement, invents
+      a stability guarantee, silently decides the policy, reports the initial review classification, or omits the
+      concrete observed change.
+  metadata:
+    id: C7
+    dataset_version: v1-public-fictional
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.
+- description: '[C8] confirmed blocker remains blocking'
+  vars:
+    surface: Pull-request review comment
+    request: Rewrite this blocking review comment concisely and naturally.
+    context: The confirmed requirement is that only the invoice owner can read it. A local reproduction using two
+      fictional accounts established the failure. This must be fixed before merge.
+    draft: 'Confirmed blocker: the invoice endpoint checks that a caller is logged in, but never checks invoice
+      ownership. With two test accounts, Account B can request an invoice belonging to Account A and receive the
+      invoice body. Add the ownership check and a regression covering both allowed owner access and denied other-account
+      access.'
+    pass_criterion: Keep the confirmed issue blocking before merge, state the concrete cross-account read and required
+      ownership check, and retain both allowed and denied access regression coverage. Use the supplied fictional
+      verification without adding any real customer or incident claim.
+    fails_if: Downgrades to a follow-up merely to sound collaborative, removes the before-merge requirement or ownership
+      guarantee, invents a production incident, or turns the direct correction into an open permission question.
+  metadata:
+    id: C8
+    dataset_version: v1-public-fictional
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.
+- description: '[C9] hypothetical example does not become a reproduction'
+  vars:
+    surface: Pull-request review comment
+    request: Write a concise comment with a concrete end-user example.
+    context: This is an untested concern to investigate as a follow-up. No runtime reproduction or user incident
+      is supplied. An illustrative invoice quantity of "three" is permitted, but must be presented as hypothetical.
+    draft: The quantity field's schema declaration may select an older dialect that ignores the integer constraint
+      used by the author. We need to confirm whether requests and responses accept a string where a quantity should
+      be an integer, then align schema admission and runtime validation.
+    pass_criterion: Offer a clearly hypothetical caller example, such as an invoice request with quantity "three",
+      while preserving uncertainty about acceptance. Say what should be verified and aligned. Keep it a follow-up
+      and avoid asserting a reproduction or actual incident.
+    fails_if: Says the request definitely passes, says I reproduced or verified it, invents an affected customer
+      or production incident, upgrades to a blocker, or supplies no user-facing illustration.
+  metadata:
+    id: C9
+    dataset_version: v1-public-fictional
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.
+- description: '[C10] distinct fixes remain distinct concerns'
+  vars:
+    surface: Pull-request review comment
+    request: Write a concise PR review comment preserving these two independent blockers.
+    context: Both failures are verified and violate agreed requirements. Their fixes are independent even though
+      both occur in the upload API.
+    draft: First, an unauthenticated caller can download an upload marked private; the endpoint lacks the required
+      access check. Second, the API accepts a 6 MB upload despite the required 5 MB limit; size admission is missing.
+      Fix private-file access and upload-size admission separately, with regressions for each.
+    pass_criterion: Retain two independently blocking concerns, the unauthenticated private-file download example,
+      the 6 MB versus 5 MB example, and each required correction with regression coverage. Keep the comment concise
+      and direct.
+    fails_if: Merges the failures into one schema issue, discards either blocker or example, downgrades either to
+      a follow-up, or changes the size values or access requirement.
+  metadata:
+    id: C10
+    dataset_version: v1-public-fictional
+    group: review-regression
+    surface: comment
+    fixture_origin: Original fictional scenario; no real repositories, people, work items or review history.

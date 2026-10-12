@@ -24,6 +24,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | --- | --- |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
 | [engineering](plugins/engineering) | Interactive PR review skill |
+| [productivity](plugins/productivity) | Direct technical writing and behavioral evals |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
 
@@ -51,6 +52,8 @@ Use Bun. The existing engineering plugin tests move with their implementation.
 bun run validate
 bun test
 ```
+
+The productivity plugin includes a writing eval suite. Install development dependencies with `bun install`, then use `bun run eval:validate` or `bun run eval:write-naturally`. Its 20 fixtures are fictional and cover team messages, customer updates, planning notes, reviews and technical designs. The writer and judge run in a read-only workspace with network access disabled inside the model workspace; model-service requests still use the configured Codex provider. The suite never posts reviews. Use `CODEX_MODEL` and `CODEX_JUDGE_MODEL` to select the writer and grader. Focus on review comments with `bun run eval:write-naturally --filter-metadata group=review-regression --max-concurrency 2`.
 
 Changes are reviewed through pull requests. See [AGENTS.md](AGENTS.md) for contribution guidance.
 

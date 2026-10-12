@@ -1,0 +1,114 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: write-naturally structure, fidelity and final review outcomes
+
+extensions:
+  - file://extensions/workspace.mjs:workspaceHook
+
+prompts:
+  - id: file://prompts/rewrite.md
+    label: write-naturally
+
+providers:
+  - id: openai:codex-sdk
+    label: codex-write-naturally
+    config:
+      model: '{{ env.CODEX_MODEL | default("gpt-5.6-luna") }}'
+      model_reasoning_effort: medium
+      working_dir: ./workspace
+      sandbox_mode: read-only
+      approval_policy: never
+      network_access_enabled: false
+      web_search_enabled: false
+      enable_streaming: true
+      maxRetries: 0
+
+defaultTest:
+  assert:
+    - type: skill-used
+      metric: repository-skill-used
+      value: write-naturally
+    - type: javascript
+      metric: repository-skill-path
+      value: |
+        const calls = context.metadata?.skillCalls || [];
+        const expected = '.agents/skills/write-naturally/SKILL.md';
+        const paths = calls.map((call) => String(call.path || '').replace(/\\/g, '/'));
+        const pass = paths.some((path) => path === expected || path.endsWith(`/workspace/${expected}`));
+        return {
+          pass,
+          score: pass ? 1 : 0,
+          reason: pass
+            ? 'Codex read the repository-local eval workspace skill.'
+            : `Expected repository-local skill read; observed: ${paths.join(', ') || 'none'}`,
+        };
+    - type: javascript
+      metric: source-link-destinations
+      value: |
+        const urls = (text) => new Set(
+          (String(text).match(/https?:\/\/[^\s<>()]+/g) || [])
+            .map((url) => url.replace(/[.,;:!?]+$/, '')),
+        );
+        const actual = urls(output);
+        const missing = [...urls(`${context.vars.draft || ""}\n${context.vars.context || ""}`)].filter((url) => !actual.has(url));
+        return {
+          pass: missing.length === 0,
+          score: missing.length === 0 ? 1 : 0,
+          reason: missing.length
+            ? `Source link destinations missing or changed: ${missing.join(', ')}`
+            : 'Source link destinations preserved.',
+        };
+    - type: llm-rubric
+      metric: direct-open-and-faithful
+      provider: &writingJudge
+        id: openai:codex-sdk
+        config:
+          model: '{{ env.CODEX_JUDGE_MODEL | default("gpt-5.6-luna") }}'
+          model_reasoning_effort: medium
+          working_dir: ./workspace
+          sandbox_mode: read-only
+          approval_policy: never
+          network_access_enabled: false
+          web_search_enabled: false
+          maxRetries: 0
+      value: |
+        Judge factual fidelity and the requested stance, not the source design's completeness or correctness.
+        Check each required fact against what the candidate actually says, including the actor, action, affected entity, conditions and limits. A related operation or outcome does not preserve the same guarantee.
+        The current request and supplied context define the intended stance and retained facts. Preserve every applicable source claim and meaning-related requirement. When the request asks for a final comment, apply its selection of relevant material: omit superseded findings and drafting history, and use the current classification. Do not demand their retention or let a stale draft override the current decision. Readability is scored separately.
+        A changed guarantee, omitted constraint or contradictory sentence is a failure even when the surrounding prose is correct.
+        Require only the detail supplied in the source. An explicitly preserved guarantee is sufficient when the source does not explain its implementation; do not demand or invent a mechanism.
+        On failure, name the violated requirement and quote the candidate text responsible, or identify the missing fact.
+        Do not require exact wording or a fixed heading template.
+
+        Requested surface: {{surface}}
+        Pass criterion: {{pass_criterion}}
+        Failure conditions: {{fails_if}}
+
+        Current context (when supplied):
+        {{context | default("")}}
+
+        Source draft:
+        {{draft}}
+    - type: llm-rubric
+      metric: readable-on-first-pass
+      provider: *writingJudge
+      value: |
+        Judge only readability and the requested tone, not factual fidelity or architectural completeness. Factual fidelity is scored separately.
+        Match the requested surface: a short comment can be one conversational paragraph; a longer design needs a visible flow and navigable explanations.
+        For a design, check that the opening gives a working picture, actors and actions are concrete, and each failure stays beside its consequence.
+        Reject a long design collapsed into one dense paragraph, a dense matrix or disconnected slogan-like fragments, even if all source facts remain.
+        Use the case's style requirements below. Do not require exact wording, particular heading names or a word-count target. Already-readable source prose may remain unchanged.
+        Require explanations to remain as concrete as the supplied source, not more technically detailed. Do not fail an explicitly preserved guarantee because its implementation mechanism is absent from both source and candidate.
+        Consider only the style-related parts of the case criteria below; factual substitutions belong to the fidelity grader.
+        On failure, identify the readability problem in the candidate.
+
+        Requested surface: {{surface}}
+        Pass criterion: {{pass_criterion}}
+        Failure conditions: {{fails_if}}
+
+        Current context (when supplied):
+        {{context | default("")}}
+
+        Source draft:
+        {{draft}}
+
+tests: file://tests/*.yaml

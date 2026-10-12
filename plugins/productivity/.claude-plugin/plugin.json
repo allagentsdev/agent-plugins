@@ -1,0 +1,9 @@
+{
+  "name": "productivity",
+  "description": "Direct, evidence-led technical writing and behavioral evaluations.",
+  "author": {
+    "name": "AllAgents"
+  },
+  "version": "1.0.0",
+  "homepage": "https://github.com/allagentsdev/agent-plugins/tree/main/plugins/productivity"
+}

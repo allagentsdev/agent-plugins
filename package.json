@@ -3,6 +3,11 @@
   "private": true,
   "scripts": {
     "validate": "bun run scripts/validate-catalogue.ts",
-    "test": "bun test"
+    "test": "bun test",
+    "eval:validate": "promptfoo validate config -c plugins/productivity/evals/write-naturally/promptfooconfig.yaml",
+    "eval:write-naturally": "promptfoo eval -c plugins/productivity/evals/write-naturally/promptfooconfig.yaml --no-cache --no-share"
+  },
+  "devDependencies": {
+    "promptfoo": "0.122.2"
   }
 }

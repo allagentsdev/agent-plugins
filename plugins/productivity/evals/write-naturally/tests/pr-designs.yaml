@@ -1,0 +1,288 @@
+# Stable case IDs; v2 replaces private source material with fictional fixtures.
+- description: '[D2] fictional restart design preserves execution and delivery boundaries'
+  vars:
+    surface: Detailed build design
+    request: Rewrite these design sections in a direct, evidence-led style so a colleague can understand the system
+      on the first read. Preserve the design and its constraints. Return only the rewritten sections.
+    draft: |
+      ## Purpose
+
+      A fictional job service is replacing Temporal with a PostgreSQL runtime owned by the application. The existing single model step and absence of tools stay the same; see [the demo baseline](https://example.org/demo/baseline).
+
+      1. Router validates the request and saves one job plus a pending `Processing` update.
+      2. Worker replicas poll PostgreSQL, then run complete jobs in memory.
+      3. PostgreSQL prevents duplicate jobs, tracks leases and enforces a cluster-wide model capacity limit.
+      4. A transaction commits the result and the first outgoing Message Service delivery.
+      5. Workers use a separate loop to send stored responses and status updates, retrying failed deliveries.
+      6. A crash before that commit restarts the whole job; a crash after it retries delivery only.
+
+      In this demo, Temporal lacks production approval. There are no customers or production jobs to migrate. Remove it directly and discard development state.
+
+      ## Design decisions
+
+      PostgreSQL owns jobs, lease ownership, attempt history, capacity, committed outcomes and pending deliveries. No Redis, Kafka or replacement orchestrator is added.
+
+      The complete job is the durable execution boundary. Model and tool progress remains in Worker memory. A failed attempt before result commit starts again from the stored input, with no model, tool or job-step checkpoints.
+
+      Each claim or restart increments a generation and assigns a new random token. Only that lease owner can commit. An older Worker may still compute, but cannot renew, commit or release capacity.
+
+      A running job owns one fixed PostgreSQL capacity row. Replica count, database pool size and process-local semaphores do not enforce correctness. Message Service must confirm `Processing` before a job claims capacity.
+
+      One transaction saves the result or a sanitized error code and message, releases capacity and queues the next delivery. Delivery retries use the stored bytes and original idempotency key, without invoking the model again.
+
+      Router publishes work. Workers poll; PostgreSQL does not push it, and the initial build uses no `LISTEN`/`NOTIFY`.
+
+      Use raw Npgsql and explicit transactions. The persistence component owns parameterized SQL, role-specific connections, transaction boundaries and recovery from a lost database acknowledgement. Add no ORM or workflow abstraction. The cutover needs no compatibility layer, dual write, state conversion or rollback path.
+    pass_criterion: |
+      The opening explains the replacement, Router and Worker responsibilities, and unchanged one-step/no-tool behavior before detailed invariants. It does not invent missing current-system behavior.
+      Mechanisms are explained in complete actor-and-action sentences, with each condition beside its consequence. In particular, the reader can understand pre-commit restart, post-commit delivery-only recovery, and rejection of an older Worker's writes without having to assemble fragments from separate lists.
+      Structure supports the explanation: ordered steps for flow, paragraphs for causal reasoning, and headings or lists where they aid navigation. Each rule has one main explanation; any repetition serves orientation or verification rather than recapping the whole design.
+      Preserve complete-job restart from stored input, no intermediate checkpoints, a higher generation and new random token on every claim/restart, and the fact that an older Worker may still compute but cannot renew, commit or release capacity.
+      Preserve prevention of duplicate jobs, not merely prevention of duplicate claims on a job. Preserve PostgreSQL capacity-slot enforcement, Processing confirmation before claiming capacity, atomic result/error storage plus capacity release plus the next delivery, and stored-byte/same-key retries without model execution. Keep raw Npgsql with no ORM and the stated migration and scope exclusions.
+      Judge readability and fidelity, not word count, exact wording, a mandatory section template or agreement with a different architecture.
+    fails_if: |
+      Merely shortens or relabels the original decision list while leaving the reader to interpret unexplained abstractions such as durable boundary; turns the explanation into terse fragments or a dense matrix; or repeats the same rules across several summary sections without adding information.
+      Changes duplicate-job prevention into duplicate-claim prevention; changes pre-commit failure into a terminal error with no restart; imports EF Core or another terminal-failure design technical choice; claims the older Worker has stopped; promises exactly-once model execution; allows execution before Processing confirmation; retries the model after a committed result; or drops any supplied constraint, uncertainty or factual claim.
+  metadata:
+    id: D2
+    group: regression
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+- description: '[D3] fictional terminal-failure design preserves explanatory flow'
+  vars:
+    surface: Detailed build design
+    request: Rewrite these design sections in a direct, evidence-led style so a colleague can understand the system
+      on the first read. Preserve the design and its constraints. Return only the rewritten sections.
+    draft: |
+      ## Purpose
+
+      A second fictional job service uses Temporal to pass a prepared request from Router to Worker and prevent duplicate starts for the same message. Replace that handoff with a PostgreSQL queue. Router still prepares requests and Worker still runs jobs in memory. The database keeps input while queued or executing and output while Message Service delivery is pending. It stores no individual model or tool steps.
+
+      ## Main flow
+
+      1. Router receives and validates a Message Service message.
+      2. Router resolves the job contract and skills before storing a run.
+      3. A unique key prevents duplicate rows for the same recipient and message ID.
+      4. Worker polls when it has capacity.
+      5. Worker claims one row and commits the claim before execution.
+      6. Worker runs the whole job without retaining a database connection or transaction.
+      7. Worker stores delivery details before calling Message Service.
+      8. Successful delivery removes the request and response bodies from the row.
+
+      Use Entity Framework Core with Npgsql for tables, mappings, migrations and normal updates. The claim uses parameterized PostgreSQL `FOR UPDATE SKIP LOCKED` inside an EF transaction.
+
+      ## Queue states
+
+      These states are separate from Message Service statuses `Received`, `Processing`, `Processed`, `Delivered` and `Failed`.
+
+      | State | Meaning |
+      | --- | --- |
+      | `queued` | The complete input is ready for a Worker. |
+      | `executing` | One Worker has claimed the run and is executing it. |
+      | `sending` | Execution has ended and stored delivery awaits Message Service. |
+      | `done` | Successful Message Service calls have completed. |
+      | `error` | Execution or delivery has failed and automatic work has ended. |
+
+      Only `queued` rows may start execution. The claim atomically changes a row to `executing`, preventing two Workers from claiming it.
+
+      During execution, perform no periodic database updates. The claim records an execution token, owner, start time and deadline. That deadline drives cancellation. Saving the outcome checks state, token and deadline so an older Worker cannot replace a later error.
+
+      A Worker crash during execution never restarts the job. After the contract deadline and a short grace period, cleanup stores a safe failure and changes the row to `sending`. The send path attempts to mark the Message Service message `Failed`; the row never returns to `queued`.
+
+      Sending uses a separate short-lived token. Before calling Message Service, store exact response bytes, the target status and idempotence keys. Another Worker can retry this stored delivery after a crash, without executing the job again. Stop after the configured delivery-attempt limit, record `error` and alert.
+    pass_criterion: |
+      Retain the preferred sample's explanatory style: orient the reader with today's Temporal behavior, the PostgreSQL replacement and unchanged responsibilities; explain the main flow before the failure rules; and use complete sentences with named actors and concrete verbs.
+      Keep causal reasoning in short paragraphs, particularly Worker death followed by deadline/grace-period cleanup and the attempted Failed update. Use a sequence for ordered operations and a compact comparison for state meanings; equivalent readable organization is acceptable.
+      Preserve all five queue states and their meanings, their distinction from Message Service statuses, the atomic queued-to-executing claim, execution token/owner/start/deadline, deadline-driven cancellation, and state/token/deadline checks when saving results. No periodic database updates are added during execution.
+      A Worker crash during execution must not restart the agent: cleanup waits for the contract deadline and short grace period, stores a safe failure in sending, and the send path attempts to mark Message Service Failed. The row never returns to queued.
+      A crash after storing delivery may retry only the exact stored delivery, using a separate short-lived token, original response bytes, target Message Service status and idempotence keys. Preserve the configured attempt limit, terminal error and alert, completed-body removal, and EF Core/Npgsql with the explicit SQL claim inside an EF transaction.
+      Already-readable prose may remain unchanged. Judge understanding and fidelity, not how much the text changed or how short it became.
+    fails_if: |
+      Replaces concrete explanations with unexplained labels, slogan-like design decisions or sentence fragments; scatters a failure and its consequence across unrelated sections; flattens the whole design into a dense checklist; or removes useful state/flow navigation merely to save words.
+      Imports restart design's complete-job restart, renewable execution leases, cluster-wide capacity-slot rows or no-ORM rule; conflates queue states with Message Service statuses; claims that marking Failed is guaranteed rather than attempted; reruns execution during delivery recovery; retains completed request/response bodies; or drops any supplied constraint or factual claim.
+  metadata:
+    id: D3
+    group: regression
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+- description: '[D4] DBD keeps design decisions and removes implementation plumbing'
+  vars:
+    surface: Detailed build design
+    request: Proofread this DBD for senior engineers. Keep codebase terms that define the architecture. Remove implementation
+      plumbing, vague environment labels, and statements the reader can infer. Explain non-obvious guarantees at
+      the design level. Return only the rewritten sections.
+    draft: |
+      ## Model step
+
+      The `job-runtime.model-step` Activity takes the recorded conversation and approved tool declarations. The Activity returns tool requests for the Workflow to execute; it must not execute them. Worker checks the final JSON object against `JobContract.Interface.Output`.
+
+      Create the model agent with `ChatClientAgentOptions.UseProvidedChatClientAsIs = true`. Keep `FunctionInvokingChatClient` outside the supplied client pipeline and set `ChatOptions.Tools` to the declarations.
+
+      A response without tool calls must contain a valid final object.
+
+      Development and integration configuration provides the required tools. The adapter already applies `MaxOutputTokens`; this design does not change that safeguard.
+
+      ## Tool loop
+
+      Execute calls from one response concurrently and retain model order in the results. The Workflow enforces `MaxToolCalls`; schedule no calls from an oversized batch.
+    pass_criterion: |
+      Keep `job-runtime.model-step`, the boundary that the model Activity returns tool requests without executing them, the single rule that Worker validates final output against `JobContract.Interface.Output`, and the `MaxToolCalls` contract.
+      Remove the MAF option, middleware and `ChatOptions` details because they describe implementation plumbing rather than the design boundary. Remove only the duplicate no-tool response sentence, the undefined "Development and integration configuration" statement and the unchanged `MaxOutputTokens` safeguard.
+      Explain concurrency through the mechanism: the Workflow schedules every call in one response before waiting, then records results in model order. Explain the limit check: compare the complete batch size with the remaining `MaxToolCalls` allowance before scheduling, and schedule none if it does not fit.
+      Keep established codebase identifiers where they let a reviewer locate the contract or Activity. Do not replace the design with generic prose detached from the codebase.
+    fails_if: |
+      Retains `ChatClientAgentOptions.UseProvidedChatClientAsIs`, `FunctionInvokingChatClient`, `ChatOptions.Tools`, the duplicate sentence `A response without tool calls must contain a valid final object`, the vague environment sentence or `MaxOutputTokens`.
+      Says only that calls run concurrently or that limits are enforced without explaining how. Drops `job-runtime.model-step`, `JobContract.Interface.Output`, `MaxToolCalls`, model-order result recording or the rule that the model Activity cannot execute tools.
+  metadata:
+    id: D4
+    group: core
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+  assert:
+  - type: contains
+    value: job-runtime.model-step
+  - type: contains
+    value: MaxToolCalls
+  - type: javascript
+    metric: design-not-plumbing
+    value: |
+      const banned = [
+        'UseProvidedChatClientAsIs',
+        'FunctionInvokingChatClient',
+        'ChatOptions.Tools',
+        'Development and integration configuration',
+        'Required tools are supplied through configuration',
+        'MaxOutputTokens',
+        'A response without tool calls must contain a valid final object',
+      ];
+      const found = banned.filter((term) => output.includes(term));
+      return {
+        pass: found.length === 0,
+        score: found.length === 0 ? 1 : 0,
+        reason: found.length === 0
+          ? 'Removed code plumbing and redundant statements.'
+          : `Retained implementation-level or redundant text: ${found.join(', ')}`,
+      };
+  - type: javascript
+    metric: design-mechanism-retained
+    value: |
+      const schedulesBeforeWaiting = /schedul\w*[\s\S]{0,100}(?:before|then)[\s\S]{0,100}wait/i.test(output);
+      const preservesOrder = /(?:model.{0,20}order|order.{0,30}(?:model|request))/i.test(output);
+      const checksRemaining = /(?:remaining|left)[\s\S]{0,100}(?:MaxToolCalls|allowance|limit)/i.test(output);
+      return {
+        pass: schedulesBeforeWaiting && preservesOrder && checksRemaining,
+        score: schedulesBeforeWaiting && preservesOrder && checksRemaining ? 1 : 0,
+        reason: `schedule-before-wait=${schedulesBeforeWaiting}; model-order=${preservesOrder}; remaining-limit=${checksRemaining}`,
+      };
+- description: '[D5] runner cost accounting explains the requirement before the label'
+  vars:
+    surface: Short technical-design section
+    request: The design requires exact base-10 money arithmetic, not a mandated storage representation. Rewrite
+      this fictional design paragraph in plain English for senior engineers. Replace the unexplained fixed-point
+      label by saying that Worker adds and compares costs exactly, and use a concrete fractional-dollar example
+      to show why the rule matters. Preserve the current and future schema behavior. Return only the rewritten section.
+    draft: |
+      ## Cost limits
+
+      The Job Contract currently authors `max_cost_usd` in integer US dollars. Worker uses exact fixed-point accounting rather than binary floating point. A later schema may support amounts below one dollar while retaining the same enforcement rule.
+    pass_criterion: |
+      Explain the exact monetary behavior instead of merely repeating "fixed-point accounting." A reader should understand that Worker adds and compares money without binary floating-point drift, using a concrete fractional-dollar example such as one cent.
+      Preserve that the current Job Contract accepts only whole US dollars and that a future schema may allow smaller units without changing the exact-accounting rule.
+      If the rewrite names an implementation type, present it as one way to satisfy the behavior. Do not define .NET decimal as fixed-point or imply that the two representations are identical.
+      Keep the answer proportionate to this short section. Do not add a separate main flow or implementation mechanism that the source does not provide.
+    fails_if: |
+      Leaves "fixed-point accounting" unexplained; calls .NET decimal a fixed-point representation; omits exact addition or comparison; gives no concrete fractional-dollar example; permits fractional authoring in the current schema; drops the future schema boundary; allows binary floating-point accounting; or invents a stronger currency or storage commitment.
+  metadata:
+    id: D5
+    group: regression
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+  assert:
+  - type: contains
+    value: max_cost_usd
+- description: '[D6] runner cost rejection keeps thresholds and failure classes'
+  vars:
+    surface: Detailed build design
+    request: Rewrite this fictional design section in plain actor-and-action language. Replace `provider I/O` with
+      the fact that Worker does not send the model request. Replace `single-upstream-attempt invariant` with the
+      fact that Gateway must guarantee a single provider call. For the exhaustion bullet, say that Worker blocks
+      the request only when input or fixed cost would use all remaining allowance or otherwise leave no positive
+      output budget; using some allowance is not enough. Keep every other rejection condition and failure classification
+      unchanged. Return only the rewritten section.
+    draft: |
+      ## Cost checks
+
+      Negative prices or values that are not finite numbers are invalid.
+
+      Worker rejects the request before provider I/O if input or fixed charges exhaust the attempt's remaining budget, any eligible deployment lacks complete non-negative prices, a charge cannot be bounded, routing or pricing or the single-upstream-attempt invariant is not established, or the effective output limit is not positive.
+
+      If the metadata transport fails or times out, end the executor invocation with a retryable dependency failure and make no model call. A successful metadata response with insufficient bounds returns `UnsupportedCostAccounting`.
+    pass_criterion: |
+      Replace compressed terms such as "provider I/O" and "single-upstream-attempt invariant" with concrete behavior: Worker does not send the model request, and Gateway must guarantee one provider call.
+      Preserve the exact exhaustion threshold. Input or fixed cost blocks the request only when it uses all remaining allowance or otherwise leaves no positive output budget; merely using some allowance is not enough.
+      Preserve every other rejection condition: invalid prices, missing pricing for any eligible deployment, unbounded charges, unstable routing or pricing, inability to guarantee one provider call, and a non-positive output limit.
+      Keep metadata transport errors and timeouts as retryable dependency failures with no model call. Keep successful but insufficient metadata as `UnsupportedCostAccounting`.
+    fails_if: |
+      Says any use of remaining allowance blocks the request; sends a model request before rejecting it; permits more than one provider call; drops an eligible-deployment, pricing, routing, charge or output-limit condition; treats a metadata transport failure as `UnsupportedCostAccounting`; treats successful but insufficient metadata as retryable; or changes any supplied failure classification.
+  metadata:
+    id: D6
+    group: regression
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+  assert:
+  - type: contains
+    value: UnsupportedCostAccounting
+- description: '[D7] runner token budget keeps the formula and limiting behavior'
+  vars:
+    surface: Detailed build design
+    request: Rewrite this fictional design section in plain actor-and-action language. Preserve the displayed formula
+      exactly and keep every token-counting input, configured and unconfigured limit boundary, no-output consequence,
+      and smallest-limit rule unchanged. Avoid implementation-plumbing prose. Return only the rewritten section.
+    draft: |
+      Worker builds the full message and tool-declaration payload before every model request. Input tokens include the user prompt, system instructions, conversation history and tool schemas.
+
+      With `max_token_usage` configured, calculate:
+
+      ```text
+      token-budget output limit =
+          maximum token usage
+          - committed token usage in this invocation
+          - current input tokens
+          - safety margin
+      ```
+
+      If this configured ceiling leaves no output allowance, return `AgentTokenLimitExceeded` without a Gateway call. With no configured token ceiling, no token-budget output limit applies. The effective output limit is the smallest of the model's limit and all configured token-budget or cost-budget limits. Reserve current input and permitted output against each applicable ceiling, then set `max_completion_tokens` to that effective limit.
+    pass_criterion: |
+      Preserve the displayed token-budget formula exactly, including its terms and order. Keep `max_token_usage`, `AgentTokenLimitExceeded`, and `max_completion_tokens`.
+      Explain plainly that Worker counts the user prompt, system instructions, conversation history, and tool schemas because each consumes input tokens, and that Worker does not call Gateway when the configured token limit leaves no output allowance.
+      Preserve both configured and unconfigured token-limit behavior. Keep the rule that Worker selects the smallest applicable model, token-budget, or cost-budget output limit, reserves the input and permitted output, and sends the effective limit as `max_completion_tokens`.
+      Describe the design behavior without adding implementation-plumbing prose.
+    fails_if: |
+      Changes any formula term or its order; drops or renames a required identifier; omits any counted input; calls Gateway when no output allowance remains; applies a token-budget output limit when no token ceiling is configured; fails to apply a configured token limit; selects anything other than the smallest applicable model, token-budget, or cost-budget output limit; drops reservation or output-limit behavior; or replaces the design with implementation details.
+  metadata:
+    id: D7
+    group: regression
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+  assert:
+  - type: contains
+    value: |
+      ```text
+      token-budget output limit =
+          maximum token usage
+          - committed token usage in this invocation
+          - current input tokens
+          - safety margin
+      ```
+  - type: contains
+    value: max_token_usage
+  - type: contains
+    value: AgentTokenLimitExceeded
+  - type: contains
+    value: max_completion_tokens

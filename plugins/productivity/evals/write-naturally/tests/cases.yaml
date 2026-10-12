@@ -1,0 +1,80 @@
+# Stable case IDs; v2 replaces private source material with fictional fixtures.
+- description: '[C1] succinct review comment stays direct and open'
+  vars:
+    surface: Pull-request review comment
+    request: Question whether the Router should require headers.caller. Keep it succinct, direct, and open to a
+      different intended meaning.
+    draft: |
+      Open question
+
+      The Job Contract leaves headers.caller optional. The Router rejects a request unless that header is portal.
+
+      Red
+
+      A portal request with the header omitted fails validation.
+
+      Green
+
+      The Router receives the portal ingress event as PortalRequest. Infer the caller there, validate the request, then start Temporal.
+    pass_criterion: Asks whether the stricter headers.caller rule is needed, explains that Router already knows
+      the Portal ingress and carries PortalRequest, and remains open to caller having separate compatibility semantics.
+      Uses concise conversational prose without headings.
+    fails_if: Uses Open question, Red, or Green headings; turns the comment into a design document; declares the
+      decision closed; loses the optional-versus-required mismatch; or invents facts.
+  metadata:
+    id: C1
+    group: core
+    surface: comment
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+  assert:
+  - type: javascript
+    metric: comment-no-template-headings
+    value: |
+      const templateHeading = /^(?:#{1,6}\s+|\*\*(?:open question|red|green)\*\*\s*$|(?:open question|red|green)\s*$)/mi;
+      return !templateHeading.test(output);
+  - type: javascript
+    metric: comment-succinctness
+    value: |
+      const words = output.trim().split(/\s+/).filter(Boolean);
+      const questions = (output.match(/\?/g) || []).length;
+      return words.length <= 110 && questions >= 1 && questions <= 2;
+  - type: contains
+    value: headers.caller
+  - type: icontains
+    value: optional
+  - type: icontains
+    value: Router
+  - type: icontains
+    value: PortalRequest
+- description: '[D1] technical design keeps useful navigation'
+  vars:
+    surface: Technical architecture decision
+    request: Rewrite this into a concise technical design that a reviewer can navigate. Keep the decision, precedence,
+      boundaries, and verification distinct.
+    draft: |
+      Configuration has three layers. Values in config.local.yaml override config.yaml, except empty scalar values leave the lower layer active. If both files lack an active value, use repository defaults. Secret storage and deployment policy are outside this change. Check local override, shared fallback, an empty local value and default fallback.
+    pass_criterion: Uses useful Markdown headings to separate the decision and supporting contract, preserves the
+      exact configuration precedence and exclusions, and remains concise.
+    fails_if: Removes headings entirely; turns the design into a conversational comment; changes the precedence;
+      treats an empty scalar as an override; adds secret-storage or deployment commitments; or invents evidence.
+  metadata:
+    id: D1
+    group: core
+    surface: technical-design
+    dataset_version: v2-public-fictional
+    fixture_origin: Original fictional fixture; no captured review text or private provenance.
+  assert:
+  - type: javascript
+    metric: design-navigation
+    value: |
+      const headings = output.match(/^#{1,3}\s+\S.+$/gm) || [];
+      return headings.length >= 2;
+  - type: contains
+    value: config.local.yaml
+  - type: contains
+    value: config.yaml
+  - type: icontains
+    value: empty
+  - type: icontains
+    value: verification
