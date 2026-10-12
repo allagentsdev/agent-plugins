@@ -1,0 +1,8 @@
+{
+  "name": "@allagents/agent-plugins",
+  "private": true,
+  "scripts": {
+    "validate": "bun run scripts/validate-catalogue.ts",
+    "test": "bun test"
+  }
+}

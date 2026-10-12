@@ -1,0 +1,37 @@
+{
+  "name": "agent-plugins",
+  "version": "1.0.0",
+  "description": "Reusable skills, agents and tools for AI assistants",
+  "owner": {
+    "name": "AllAgents",
+    "url": "https://allagents.dev"
+  },
+  "plugins": [
+    {
+      "name": "allagents",
+      "description": "End-user guidance for managing AllAgents through its CLI",
+      "source": "./plugins/allagents"
+    },
+    {
+      "name": "deepwiki",
+      "description": "AI-generated documentation for GitHub repositories",
+      "source": "./plugins/deepwiki"
+    },
+    {
+      "name": "engineering",
+      "description": "Reusable engineering workflow skills",
+      "source": "./plugins/engineering"
+    },
+    {
+      "name": "tradingview",
+      "description": "Official TradingView market data and analytics",
+      "source": "./plugins/tradingview"
+    },
+    {
+      "name": "finance",
+      "description": "Transparent spreadsheet financial modeling with reusable calculation blocks and validated outputs",
+      "source": "./plugins/finance",
+      "category": "finance"
+    }
+  ]
+}
