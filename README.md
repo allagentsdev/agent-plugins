@@ -24,7 +24,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | --- | --- |
 | [allagents](plugins/allagents) | Guidance for operating the AllAgents CLI |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
-| [engineering](plugins/engineering) | Worktree and interactive PR review skills |
+| [engineering](plugins/engineering) | Interactive PR review skill |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
 
