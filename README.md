@@ -22,11 +22,12 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 
 | Plugin | Contents |
 | --- | --- |
-| [allagents](plugins/allagents) | Guidance for operating the AllAgents CLI |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
 | [engineering](plugins/engineering) | Interactive PR review skill |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
+
+The CLI-specific guidance plugin remains in [allagents/plugins/allagents](https://github.com/allagentsdev/allagents/tree/main/plugins/allagents), installed as `allagents@allagentsdev/allagents`.
 
 Some plugins connect to external services; their availability and authentication are governed by those services. The catalogue contains reusable guidance and configurations, not personal credentials or records.
 
@@ -40,7 +41,7 @@ plugins:
   - engineering@allagentsdev/agent-plugins
 ```
 
-The companion AllAgents migration preserves the old marketplace declarations, such as `finance@allagentsdev/allagents`, through external sources. Direct old directory URLs do not redirect: replace `allagentsdev/allagents/plugins/<name>` with `<name>@allagentsdev/agent-plugins`. Upgrade AllAgents before using the migrated forwarding marketplace. Pinned historical versions continue to use their original content.
+The companion AllAgents migration preserves the old marketplace declarations, such as `finance@allagentsdev/allagents`, through external sources. Direct old directory URLs for the moved plugins do not redirect: replace `allagentsdev/allagents/plugins/<name>` with `<name>@allagentsdev/agent-plugins`. Upgrade AllAgents before using the migrated forwarding marketplace. Pinned historical versions continue to use their original content.
 
 ## Development
 
