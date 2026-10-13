@@ -1,0 +1,265 @@
+# Humanizer-inspired behavioral cases and controls, authored as fictional examples.
+# Calibration examples are metadata only; neither writer prompt receives them.
+- description: '[H1] announcement states the feature without staged contrasts'
+  vars:
+    surface: Product announcement
+    request: Rewrite this as a short, natural announcement.
+    context: The supported facts are the launch of CalendarBird and email reminders one day before appointments.
+      The draft contains rhetorical framing; no broader customer outcome has been measured.
+    draft: 'CalendarBird is not just a calendar. It is a bridge to meaningful connections. Here is what you need
+      to know: CalendarBird is now available and emails a reminder one day before each appointment. This changes
+      everything.'
+    pass_criterion: States that CalendarBird is available and emails reminders one day before appointments. Makes
+      no unsupported outcome claim.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: States the feature directly without inventing an opposing belief, announcing an explanation,
+      or adding a dramatic closing that repeats or inflates the point.
+    style_fails_if: Keeps staged framing, an unprompted not-X-but-Y contrast, or a closer that adds no concrete
+      information.
+  metadata:
+    id: H1
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Product announcement
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 1
+    - 2
+    - 4
+    - 5
+    calibration_good: CalendarBird is available now. It emails you a reminder one day before each appointment.
+    calibration_bad_style: This is not just a calendar update. CalendarBird is now available and emails a reminder
+      one day before each appointment. That is the real win.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H2] measured result keeps its scope without dramatic fragments'
+  vars:
+    surface: Team update
+    request: Rewrite this pilot update naturally and keep the measurement precise.
+    context: Only one pilot team was measured. No organization-wide improvement has been established.
+    draft: The pilot team spent two hours preparing the report, down from three. Read that again. One hour back.
+      No wasted motion. No endless busywork. This is a pivotal moment for productivity.
+    pass_criterion: Preserves report preparation falling from three hours to two for the one pilot team. Does not
+      generalize beyond the pilot or invent another measurement.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Lets the measured change carry the point, using connected conversational sentences rather than
+      theatrical fragments or claims of significance.
+    style_fails_if: Retains dramatic pauses, repeated fragments, or an inflated lesson after the measurement.
+  metadata:
+    id: H2
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Team update
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 2
+    - 3
+    - 13
+    calibration_good: The pilot team prepared the report in two hours, down from three.
+    calibration_bad_style: The pilot team prepared the report in two hours, down from three. Read that again. One
+      hour saved. That is the real win.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H3] marketing copy uses supported functionality instead of vague authority'
+  vars:
+    surface: Product description
+    request: Rewrite this as plain product copy using only the confirmed features.
+    context: 'Confirmed features: filter tickets by owner and status, and save that view. No expert endorsement,
+      customer study or performance benchmark is supplied.'
+    draft: Experts agree that QueueLeaf is a groundbreaking solution in the evolving landscape of team productivity.
+      It lets you filter tickets by owner and status and save the view, underscoring its profound impact on how
+      teams work.
+    pass_criterion: Preserves filtering tickets by owner and status and saving the view. Adds no expert endorsement,
+      study, benchmark or other unsupported benefit.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Uses concrete functionality and ordinary verbs. Makes the product understandable without vague
+      authority or inflated significance.
+    style_fails_if: Leaves promotional scaffolding around the supported features, or substitutes abstract praise
+      for an explanation of what the product does.
+  metadata:
+    id: H3
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Product description
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 12
+    - 13
+    - 15
+    - 17
+    - 18
+    calibration_good: QueueLeaf lets you filter tickets by owner and status, then save the view.
+    calibration_bad_style: QueueLeaf is a pivotal solution in the evolving productivity landscape. It lets you filter
+      tickets by owner and status and save the view, highlighting the importance of efficient workflows.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H4] short delivery message uses a proportionate format'
+  vars:
+    surface: Customer chat
+    request: Rewrite this as a brief, friendly chat message.
+    context: The order shipped Monday, is due Thursday, and can be tracked at the supplied link.
+    draft: |-
+      **Shipment Update:** Your order shipped Monday.
+      **Arrival Insight:** It is due Thursday.
+      **Tracking Convenience:** You can track it at https://example.org/tracking/parcel-27.
+      A seamless delivery experience awaits.
+    pass_criterion: Keeps Monday shipment, Thursday expected arrival, and the exact tracking URL. Does not turn
+      the expected arrival into a guarantee.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Uses an ordinary short chat message with formatting proportionate to the three simple facts.
+    style_fails_if: Formats the chat as a decorated announcement with a label for every sentence, or adds a promotional
+      closing.
+  metadata:
+    id: H4
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Customer chat
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 19
+    - 20
+    - 22
+    calibration_good: 'Your order shipped Monday and is due Thursday. You can track it here: https://example.org/tracking/parcel-27.'
+    calibration_bad_style: |-
+      **Shipment Update:** Your order shipped Monday.
+      **Arrival Insight:** It is due Thursday.
+      **Tracking Convenience:** You can track it at https://example.org/tracking/parcel-27.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H5] already-natural X post keeps the author voice'
+  vars:
+    surface: X post
+    request: Polish this lightly, keeping the dry humor and first-person voice.
+    context: This is a fictional authored post. Its anecdote and opinion are supplied, so they may be retained.
+      No customer adoption or performance claims are supplied.
+    draft: Spent the morning automating a task that takes two minutes. Excellent use of four hours. Anyway, the
+      script is here and future me owes me a coffee.
+    pass_criterion: Keeps the two-minute task, four hours spent, available script, and first-person coffee joke.
+      Does not invent adoption, performance results or personal experiences.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Keeps the casual dry humor and recognisable first-person voice. An already-readable draft may
+      remain unchanged or receive only small edits.
+    style_fails_if: Turns it into a formal status report, adds a generic moral or promotional claim, or removes
+      the supplied humor just to make it sound neutral.
+  metadata:
+    id: H5
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: X post
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - Voice
+    - When not to act
+    calibration_good: Spent four hours automating a two-minute task. Excellent use of my morning. The script is
+      here, and future me owes me a coffee.
+    calibration_bad_style: I spent four hours automating a task that takes two minutes. The script is available,
+      and I believe my future self owes me a coffee. This demonstrates the value of investing in efficiency.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H6] reply respects the context the recipient already knows'
+  vars:
+    surface: Planning thread reply
+    request: Write a short reply stating the decision and next action.
+    context: The recipient already knows the room has 12 practice stations and agrees that attendance must be capped
+      at 12. The current decision is to keep the cap for this workshop and put extra registrants on a waiting list
+      for next month.
+    draft: The room contains 12 practice stations. That is why the workshop can take only 12 attendees, as we discussed.
+      If we admit more people, some will not have a station. Since we have already agreed to this limit, I think
+      we should keep it for this workshop and put extra registrants on the waiting list for next month.
+    pass_criterion: States the settled decision to keep the 12-person cap for this workshop and place extra registrants
+      on the waiting list for next month.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Leads with the decision and action, using only context that the recipient still needs. The
+      reply need not re-explain the known room constraint.
+    style_fails_if: Rebuilds the explanation already agreed in the thread before reaching the decision, or narrates
+      the drafting process.
+  metadata:
+    id: H6
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Planning thread reply
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 26
+    calibration_good: Keep the cap at 12 for this workshop and put extra registrants on the waiting list for next
+      month.
+    calibration_bad_style: As we discussed, the room has 12 practice stations, so some attendees would lack a station
+      if we admitted more than 12. For that reason, keep the 12-person cap for this workshop and put extra registrants
+      on the waiting list for next month.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H7] three genuine requirements keep useful navigation'
+  vars:
+    surface: Handoff checklist
+    request: Polish this checklist lightly and retain the three bullets so staff can check them off.
+    context: All three tasks are required and distinct. The checklist format is part of the request.
+    draft: |-
+      - Confirm the room booking by Tuesday.
+      - Send the attendee list by Wednesday.
+      - Return the access cards on Friday.
+    pass_criterion: 'Keeps each task and its deadline: room confirmation Tuesday, attendee list Wednesday, access-card
+      return Friday.'
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Preserves useful checklist structure and three genuinely distinct items. Already-natural wording
+      may stay unchanged.
+    style_fails_if: Removes useful bullets or merges distinct tasks merely to avoid a list of three; adds decorative
+      headings or a generic conclusion.
+  metadata:
+    id: H7
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Handoff checklist
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 6
+    - 19
+    - When not to act
+    calibration_good: |-
+      - Confirm the room booking by Tuesday.
+      - Send the attendee list by Wednesday.
+      - Return the access cards on Friday.
+    calibration_bad_style: Confirm the room booking by Tuesday, send the attendee list by Wednesday, and return
+      the access cards on Friday. Those are the foundations of a successful event.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.
+- description: '[H8] plain technical wording survives shape edits'
+  vars:
+    surface: Release note
+    request: Polish this release note naturally without weakening the behavior.
+    context: Gate is the established technical term in this system. The guarantees are part of the release note,
+      not decorative detail.
+    draft: The deployment gate checks the signature before publishing. If the signature is invalid, it publishes
+      nothing. The export starts all report jobs before waiting and returns the results in the original request
+      order.
+    pass_criterion: Preserves the signature check before publishing, publishing nothing on an invalid signature,
+      starting all report jobs before waiting, and returning results in original request order.
+    fails_if: Changes or omits a required fact, adds an unsupported claim, or changes the requested intent.
+    style_criterion: Keeps plain technical wording and sufficient explanation. Already-readable sentences may remain
+      unchanged; established technical terms are appropriate.
+    style_fails_if: Replaces the clear mechanisms with slogans, makes the note grandiose, or unnecessarily paraphrases
+      an established technical term as if it were forbidden.
+  metadata:
+    id: H8
+    dataset_version: v1-public-fictional
+    group: humanizer
+    surface: Release note
+    fixture_origin: Original fictional fixture; no captured personal writing or private provenance.
+    pattern_source: https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md
+    pattern_sections:
+    - 12
+    - How to work
+    - When not to act
+    calibration_good: The deployment gate checks the signature before publishing and publishes nothing if it is
+      invalid. The export starts all report jobs before waiting, then returns results in the original request order.
+    calibration_bad_style: The deployment gate checks the signature before publishing and publishes nothing if it
+      is invalid. The export starts all report jobs before waiting and returns results in the original request order.
+      This is not just a release; it is a turning point for reliability.
+    calibration_origin: Manually authored controls for grader calibration; never supplied to the writer or used
+      for exact matching.

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Write Naturally"
+  short_description: "Write direct, evidence-led technical prose"
+policy:
+  allow_implicit_invocation: true

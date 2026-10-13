@@ -27,6 +27,11 @@
       "description": "Transparent spreadsheet financial modeling with reusable calculation blocks and validated outputs",
       "source": "./plugins/finance",
       "category": "finance"
+    },
+    {
+      "name": "productivity",
+      "description": "Clear technical writing with behavioral evaluation cases",
+      "source": "./plugins/productivity"
     }
   ]
 }

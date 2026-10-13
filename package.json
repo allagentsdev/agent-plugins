@@ -3,6 +3,13 @@
   "private": true,
   "scripts": {
     "validate": "bun run scripts/validate-catalogue.ts",
-    "test": "bun test"
+    "test": "bun test",
+    "eval:validate": "promptfoo validate config -c plugins/productivity/evals/write-naturally/promptfooconfig.yaml",
+    "eval:write-naturally": "promptfoo eval -c plugins/productivity/evals/write-naturally/promptfooconfig.yaml --no-cache --no-share",
+    "eval:write-naturally:baseline": "bun run scripts/eval-writing-baseline.ts plugins/productivity/evals/write-naturally"
+  },
+  "devDependencies": {
+    "@openai/codex-sdk": "0.162.1",
+    "promptfoo": "0.124.1"
   }
 }
