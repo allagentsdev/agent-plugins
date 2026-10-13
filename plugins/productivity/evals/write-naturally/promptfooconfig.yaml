@@ -12,7 +12,7 @@ providers:
   - id: openai:codex-sdk
     label: codex-write-naturally
     config:
-      model: '{{ env.CODEX_MODEL | default("gpt-5.6-luna") }}'
+      model: '{{ env.CODEX_MODEL | default("gpt-6.1-sol") }}'
       model_reasoning_effort: medium
       working_dir: ./workspace
       sandbox_mode: read-only
@@ -96,14 +96,15 @@ defaultTest:
         Match the requested surface: a short comment can be one conversational paragraph; a longer design needs a visible flow and navigable explanations.
         For a design, check that the opening gives a working picture, actors and actions are concrete, and each failure stays beside its consequence.
         Reject a long design collapsed into one dense paragraph, a dense matrix or disconnected slogan-like fragments, even if all source facts remain.
+        When the context says the recipient already knows an explanation, apply the case's requirement to lead with the decision rather than repeating that explanation. Clear wording alone does not satisfy a request to omit known context.
         Use the case's style requirements below. Do not require exact wording, particular heading names or a word-count target. Already-readable source prose may remain unchanged.
         Require explanations to remain as concrete as the supplied source, not more technically detailed. Do not fail an explicitly preserved guarantee because its implementation mechanism is absent from both source and candidate.
         Consider only the style-related parts of the case criteria below; factual substitutions belong to the fidelity grader.
         On failure, identify the readability problem in the candidate.
 
         Requested surface: {{surface}}
-        Pass criterion: {{pass_criterion}}
-        Failure conditions: {{fails_if}}
+        Pass criterion: {{style_criterion | default(pass_criterion)}}
+        Failure conditions: {{style_fails_if | default(fails_if)}}
 
         Current context (when supplied):
         {{context | default("")}}
