@@ -3,10 +3,10 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const suiteRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const pluginRoot = resolve(suiteRoot, '../..');
+const repositoryRoot = resolve(suiteRoot, '../../..');
 const workspace = resolve(suiteRoot, 'workspace');
 const workspaceAgents = resolve(workspace, '.agents');
-const skillSource = resolve(pluginRoot, 'skills/write-naturally');
+const skillSource = resolve(repositoryRoot, 'plugins/productivity/skills/write-naturally');
 const skillTarget = resolve(workspaceAgents, 'skills/write-naturally');
 
 export function workspaceHook(hookName, context) {

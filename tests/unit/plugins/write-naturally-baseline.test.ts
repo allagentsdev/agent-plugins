@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import baselineNoTools from '../../../plugins/productivity/evals/write-naturally/assertions/baseline-no-tools.mjs';
+import baselineNoTools from '../../../evals/productivity/write-naturally/assertions/baseline-no-tools.mjs';
 
 const context = (items: unknown[]) => ({ providerResponse: { raw: JSON.stringify({ items }) } });
 const response = { type: 'agent_message', text: 'Rewritten text.' };
