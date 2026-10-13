@@ -61,6 +61,14 @@ Additional coverage lives in the [private eval repository](https://github.com/al
 
 Eight fictional cases inspired by [Humanizer](https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md) cover rhetorical framing, inflated claims, formatting, voice and replies to readers who already know the context. Controls keep useful checklists and plain technical wording. Run the same cases with the skill using `bun run eval:write-naturally --filter-metadata group=humanizer`, then without it using `bun run eval:write-naturally:baseline`. Both conditions use the same writer model, reasoning setting and graders. The baseline rejects recorded tool calls, including file reads, and missing traces. This checks the model turn; it cannot rule out instructions supplied by the surrounding Codex configuration.
 
+### Compare with the Humanizer skill
+
+`bun run eval:humanizer` runs the full public suite with Humanizer using the same writer settings, case criteria and graders as `bun run eval:write-naturally`. To compare only the eight Humanizer-inspired cases, add `--filter-metadata group=humanizer` to both commands. Use `bun run eval:humanizer --validate` to check the generated configuration without downloads or model calls.
+
+The extension downloads Humanizer's `SKILL.md` and MIT license from revision `225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8` before evaluation and verifies both SHA-256 hashes. The writer reads that skill in a separate temporary workspace; the common rewrite instructions stay the same. The prompt requests Humanizer's embedded mode so graders receive only the final text. Downloads require host networking; networking remains disabled inside the model workspace. Download or checksum failures stop the run. The runner cleans up downloaded files and temporary configuration after normal completion or a reported failure; interruption can leave ignored temporary files. The result description records the revision and skill hash.
+
+Use the same model overrides and filters for each condition. Compare individual outputs and separate grader errors from writing failures before making claims about either skill. These runs can still receive instructions from the surrounding Codex configuration.
+
 Readability has separate style criteria for these cases; fact preservation is graded independently. Calibration answers stay in metadata and are never supplied to the writer. Compare individual outputs and repeat runs before attributing a gain to the skill.
 
 Changes are reviewed through pull requests. See [AGENTS.md](AGENTS.md) for contribution guidance.

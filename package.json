@@ -6,7 +6,8 @@
     "test": "bun test",
     "eval:validate": "promptfoo validate config -c evals/productivity/write-naturally/promptfooconfig.yaml",
     "eval:write-naturally": "promptfoo eval -c evals/productivity/write-naturally/promptfooconfig.yaml --no-cache --no-share",
-    "eval:write-naturally:baseline": "bun run scripts/eval-writing-baseline.ts evals/productivity/write-naturally"
+    "eval:write-naturally:baseline": "bun run scripts/eval-writing-baseline.ts evals/productivity/write-naturally",
+    "eval:humanizer": "bun run scripts/eval-writing-humanizer.ts evals/productivity/write-naturally"
   },
   "devDependencies": {
     "@openai/codex-sdk": "0.162.1",
