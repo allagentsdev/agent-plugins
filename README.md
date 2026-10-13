@@ -55,6 +55,8 @@ bun test
 
 The productivity plugin includes a writing eval suite. Install development dependencies with `bun install`, then use `bun run eval:validate` or `bun run eval:write-naturally`. Its 28 fixtures are fictional and cover team messages, customer updates, planning notes, reviews and technical designs. The writer and judge run in a read-only workspace with network access disabled inside the model workspace; model-service requests still use the configured Codex provider. The suite never posts reviews. The writer defaults to `gpt-6.1-sol`; the grader defaults to `gpt-5.6-luna`. Use `CODEX_MODEL` and `CODEX_JUDGE_MODEL` to override them separately. Focus on review comments with `bun run eval:write-naturally --filter-metadata group=review-regression --max-concurrency 2`.
 
+Additional coverage lives in the [private eval repository](https://github.com/allagentsdev/agent-plugins-evals-private).
+
 ### Humanizer comparison
 
 Eight fictional cases inspired by [Humanizer](https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md) cover rhetorical framing, inflated claims, formatting, voice and replies to readers who already know the context. Controls keep useful checklists and plain technical wording. Run the same cases with the skill using `bun run eval:write-naturally --filter-metadata group=humanizer`, then without it using `bun run eval:write-naturally:baseline`. Both conditions use the same writer model, reasoning setting and graders. The baseline rejects recorded tool calls, including file reads, and missing traces. This checks the model turn; it cannot rule out instructions supplied by the surrounding Codex configuration.
