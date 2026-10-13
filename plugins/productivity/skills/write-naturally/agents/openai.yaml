@@ -1,5 +1,5 @@
 interface:
   display_name: "Write Naturally"
-  short_description: "Write direct, evidence-led technical prose"
+  short_description: "Write or review clear, faithful prose"
 policy:
   allow_implicit_invocation: true

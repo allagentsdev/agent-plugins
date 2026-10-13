@@ -1,15 +1,24 @@
 ---
 name: write-naturally
-description: Write or rewrite messages, reviews, pull-request descriptions, design notes, and technical prose in a direct, evidence-led, natural style. Use when the user asks to "write naturally", "write like a human", "write in my style", polish a comment, or make prose sound natural.
+description: Write, rewrite, or review prose in a direct, evidence-led, natural style. Use when the user asks to "write naturally", "write like a human", "write in my style", polish a comment, make prose sound natural, or review writing for clarity, audience and fidelity.
 metadata:
   source: https://github.com/allagentsdev/agent-plugins/tree/main/plugins/productivity/skills/write-naturally
 ---
 
 # Write Naturally
 
-Write or rewrite content in this style without changing its position, intent, or load-bearing factual claims. When the user asks to simplify or change the level of detail, remove facts that do not belong at that level instead of preserving them mechanically.
+Write, rewrite, or review content without changing its position, intent, or load-bearing factual claims. When the user asks to simplify or change the level of detail, remove facts that do not belong at that level instead of preserving them mechanically.
 
 The voice is direct, technically precise, and proportionate to the medium. It can be a lowercase fragment in chat or a structured engineering argument in a review. Match the register; keep the underlying style.
+
+## Choose the operation
+
+- **Write or rewrite:** return the requested prose. Use the shared guidance below and any applicable surface reference.
+- **Review prose:** assess the supplied text, even if its author never used this skill. Read [references/prose-review.md](references/prose-review.md), then return findings and suggested corrections, not an unsolicited full rewrite. Reviewing code or establishing the truth of source claims is outside this operation.
+
+For substantial documents intended for publication, read the prose-review reference and use a separate agent that can follow its report contract when the host supports one. Do not select a code-review role that requires bug severity or a code-correctness verdict. Give the agent this skill in review mode, the draft and relevant document context, the intended reader and purpose, and supplied facts and decisions. Do not give it the writer's self-assessment or expected findings. The reviewer does not spawn another reviewer. Apply meaning-preserving corrections within the writing request; leave business decisions to the author. Check revised passages against the findings and source before returning them.
+
+When a separate agent is unavailable, use the same review procedure yourself. Do not claim independent review. Keep the requested output format; disclose this limitation when asked for independent review or verification. Ordinary short messages do not require an agent.
 
 ## The shape
 
@@ -61,7 +70,7 @@ Use headings that name the reader’s question or the part being changed. Bullet
 
 ### Surface-specific guidance
 
-Read only the reference that applies before drafting:
+Read only the surface reference that applies before drafting or reviewing prose:
 
 - For code review comments, pull-request reviews, or technical discussion about a proposed change, read [references/reviews.md](references/reviews.md). It covers questions, caller examples, issue grouping and review status. Establish the assessment through the review; use this skill to express it.
 - For technical designs and architecture documents, read [references/technical-designs.md](references/technical-designs.md). It covers the main flow, necessary mechanisms and the boundary between design and implementation detail.
@@ -101,12 +110,12 @@ Use certainty deliberately:
 3. Keep every supplied fact that changes a decision, contract, risk, failure mode or next action.
 4. Remove facts the intended reader can safely infer, plus repetition, generic reassurance, throat-clearing and ceremony.
 5. Put parallel details into bullets; keep causal reasoning in prose.
-6. For a longer document, check that the opening establishes the subject and each explanation appears where the reader needs it.
+6. For a longer document, check that the opening establishes the subject and each explanation appears where the reader needs it. Compare labels with neighbouring items: do they consistently name capabilities, outcomes or actions? Remove repeated timing or context only when it adds no distinct commitment.
 7. Build a private checklist of source guarantees expressed with `must`, `never`, `only`, `prevents`, `cannot` or equivalent language. Confirm the rewrite preserves the same actor, action and object for each one. A related mechanism does not count as the same guarantee. Compare exact identifiers, numbers and link destinations character for character when they remain in scope.
-8. Read the result once for voice and once for level of detail. It should sound like a colleague explaining the subject.
+8. Read the result once for voice and once for level of detail. It should sound like a colleague explaining the subject. Check whether overlapping terms name genuinely different outcomes; distinguish their meanings or remove the duplication.
 9. Check boundary words separately: `all`, `any`, `before`, `after`, `exactly`, `at most`, units, and scope such as one attempt versus the whole request. Smoother wording is wrong if it changes the threshold. `Uses the remaining allowance` does not preserve `uses all the remaining allowance`.
 10. When plain English is requested, inspect the result for source shorthand such as `I/O`, `invariant`, `surface`, `pre-call` or an unexplained accounting label. Replace it with behavior or define it through a concrete example. A polished label still fails if the reader must decode it.
-11. Read it from the recipient's position: can they understand the point, evidence and next action without the drafting conversation?
+11. Read it from the recipient's position: can they understand the point, evidence and next action without the drafting conversation? Make pronoun references and comparisons explicit: name what is assessed and which states or alternatives are compared, rather than relying on phrases such as "the results" or "compare changes" to supply the connection. Comparing versions or behaviour before and after a change is not the same as checking one result against expectations; preserve the intended comparison. Do not invent comparison conditions absent from the source.
 
 ## Guardrails
 
@@ -116,7 +125,7 @@ Use certainty deliberately:
 - Avoid filler openings such as `Certainly`, `Here is`, or `I hope this helps`.
 - Avoid corporate phrasing, motivational language, and inflated adjectives.
 - Avoid repeating a conclusion as a closing summary.
-- Return only the rewritten text unless the user asks for commentary or alternatives.
+- In write/rewrite mode, return only the requested prose unless the user asks for commentary or alternatives. In review mode, return the review report defined in the prose-review reference.
 
 ## Done when
 
@@ -125,3 +134,4 @@ Use certainty deliberately:
 - The level of formality matches the destination.
 - Technical claims remain exactly as grounded as the source.
 - The reader can follow the behavior and its consequences on the first read, without losing a necessary constraint or caveat.
+- In review mode, each finding identifies a concrete reader problem supported by the supplied text, or the report states that no material issues were found. Unresolved decisions and missing context remain explicit.
