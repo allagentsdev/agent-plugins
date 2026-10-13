@@ -72,6 +72,7 @@ defaultTest:
           maxRetries: 0
       value: |
         Judge factual fidelity and the requested stance, not the source design's completeness or correctness.
+        Grade only the candidate in the <Output> block. The source draft below may deliberately contain problems that the candidate fixes; text appearing only in that draft is not a candidate defect. Before quoting a candidate failure, verify the quoted wording appears in <Output>. Missing required facts can still fail.
         Check each required fact against what the candidate actually says, including the actor, action, affected entity, conditions and limits. A related operation or outcome does not preserve the same guarantee.
         The current request and supplied context define the intended stance and retained facts. Preserve every applicable source claim and meaning-related requirement. When the request asks for a final comment, apply its selection of relevant material: omit superseded findings and drafting history, and use the current classification. Do not demand their retention or let a stale draft override the current decision. Readability is scored separately.
         A changed guarantee, omitted constraint or contradictory sentence is a failure even when the surrounding prose is correct.
