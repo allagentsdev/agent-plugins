@@ -14,7 +14,7 @@ The voice is direct, technically precise, and proportionate to the medium. It ca
 ## The shape
 
 Lead with the point. Then give only the context needed to support it.
-When the user asks for plain English, preserve the contract rather than the source's compressed wording. Do not carry unexplained shorthand into the rewrite. Replace it with the responsible actor, observable action and relevant condition; keep the specialist term only after that explanation and only when the reader still needs it.
+For PR comments and short technical discussion, use plain language by default, even when it was not requested. Name who acts, what happens and, where relevant, where it happens; include the triggering condition and observable consequence instead of relying on compressed labels. When the user asks for plain English, preserve the contract rather than the source's compressed wording. Do not carry unexplained shorthand into the rewrite. Keep a specialist term only after explaining it, and only when the reader still needs it.
 
 For technical writing, prefer this order:
 

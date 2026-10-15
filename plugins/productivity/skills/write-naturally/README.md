@@ -1,5 +1,7 @@
 # Write naturally
 
+Plain language is the default for PR comments and short technical discussion, even when the request is only for a concise comment. Keep necessary technical detail and the agreed review status.
+
 ## Practical gotchas
 
 - **Long conversations:** an agent can read the skill early and later drift from it. Before the final version, check which guidance it is applying. If the answer is vague or the prose has drifted, ask it to reread the skill and the relevant reference. A claim that it remembers the skill is weaker evidence than a fresh read.

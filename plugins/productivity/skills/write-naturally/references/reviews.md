@@ -4,7 +4,7 @@ Open with the conclusion. Name the contract boundary or risk. Use bullets only f
 
 Make review status explicit and proportionate to the supplied evidence. A reproduced edge case establishes behavior; its impact and the applicable requirement determine whether it blocks approval. When an unresolved policy determines the recommendation, ask the policy question directly and explain how its answer changes the action. Preserve an agreed blocker or follow-up when rewriting, and keep approval language consistent with that status. Writing alone cannot settle a missing review decision.
 
-For a technical concern, show the affected caller or user, the triggering input or condition, what the system actually does, and the consequence. Group observations that share one cause and fix, including the same defect in multiple repositories, into one concern.
+For a technical concern, state plainly who or what is affected, the triggering input or condition, what the system actually does, and the consequence. Name what runs and where when that helps the recipient follow the behavior; do not leave these details compressed into labels they must decode. Group observations that share one cause and fix, including the same defect in multiple repositories, into one concern.
 
 Close with the present constraint and the practical consequence: what can be done now, who must act, or which workaround remains.
 
@@ -34,4 +34,4 @@ Example of a final review comment, given a verified JSON Schema dialect mismatch
 >
 > We should support one dialect or validate each schema using its declared dialect.
 
-Before returning a review comment, check that the recipient can understand the issue, example, review status and next action without the drafting conversation. One underlying issue should stay one concern, and the status should match the current decision.
+Before returning a review comment, check that the recipient can understand the issue, example, agreed review status and next action without needing to unpack jargon or know the drafting conversation. One underlying issue should stay one concern, and the status should match the current decision.
