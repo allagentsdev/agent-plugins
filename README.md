@@ -23,7 +23,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | Plugin | Contents |
 | --- | --- |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
-| [engineering](plugins/engineering) | Interactive PR review skill |
+| [engineering](plugins/engineering) | Interactive PR review and supplemental change impact review |
 | [productivity](plugins/productivity) | Direct technical writing and behavioral evals |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
@@ -31,6 +31,8 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 The CLI-specific guidance plugin remains in [allagents/plugins/allagents](https://github.com/allagentsdev/allagents/tree/main/plugins/allagents), installed as `allagents@allagentsdev/allagents`.
 
 Some plugins connect to external services; their availability and authentication are governed by those services. The catalogue contains reusable guidance and configurations, not personal credentials or records.
+
+After a primary code review completes, invoke `change-impact-review` with its receipt, exact base/head revisions, and a writable report location. The [skill](plugins/engineering/skills/change-impact-review/SKILL.md) traces effects through unchanged code and reports supported additional findings without changing the primary review.
 
 ## Workspace templates
 
