@@ -23,7 +23,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | Plugin | Contents |
 | --- | --- |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
-| [engineering](plugins/engineering) | Interactive PR review skill |
+| [engineering](plugins/engineering) | Interactive PR review and read-only GitHub attention checks |
 | [productivity](plugins/productivity) | Direct technical writing and behavioral evals |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
@@ -31,6 +31,18 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 The CLI-specific guidance plugin remains in [allagents/plugins/allagents](https://github.com/allagentsdev/allagents/tree/main/plugins/allagents), installed as `allagents@allagentsdev/allagents`.
 
 Some plugins connect to external services; their availability and authentication are governed by those services. The catalogue contains reusable guidance and configurations, not personal credentials or records.
+
+## GitHub attention
+
+The engineering plugin includes [github-attention](plugins/engineering/skills/github-attention/SKILL.md). Give it an explicit list of repositories to check for current review requests, assigned issues, action on authored PRs, and notification-based mention/reply candidates. It uses your existing `gh` login and never acts on GitHub tasks.
+
+Run the helper directly from this repository with Bun and `gh`; no package installation is needed:
+
+```sh
+bun plugins/engineering/skills/github-attention/scripts/github-attention.ts owner/repo
+```
+
+Save personal selections and private reports in `~/.agents/github-attention.md`, outside project repositories. When asked for a saved selection, the skill reads that note and resolves only explicitly recorded repository rules. The helper still requires repository arguments each time; it does not load a second configuration system. Keep private data out of the reusable skill and fixtures; repository-local temporary notes must be ignored, for example with `*.local.md`. Mention coverage is bounded by visible notifications, not a complete historical inbox.
 
 ## Workspace templates
 
