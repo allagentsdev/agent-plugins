@@ -1,0 +1,5 @@
+interface:
+  display_name: "GitHub Attention"
+  short_description: "Check selected repositories for work needing you"
+policy:
+  allow_implicit_invocation: true
