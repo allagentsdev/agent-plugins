@@ -42,7 +42,7 @@ Run the helper directly from this repository with Bun and `gh`; no package insta
 bun plugins/engineering/skills/github-attention/scripts/github-attention.ts owner/repo
 ```
 
-Personal selections and private reports belong in an ignored `*.local.md` file or your user-level `~/.agents/AGENTS.md`, not in the reusable skill or fixtures. The helper requires repository arguments each time; it does not load a second configuration system. Mention coverage is bounded by visible notifications, not a complete historical inbox.
+Save personal selections and private reports in `~/.agents/github-attention.md`, outside project repositories. When asked for a saved selection, the skill reads that note and resolves only explicitly recorded repository rules. The helper still requires repository arguments each time; it does not load a second configuration system. Keep private data out of the reusable skill and fixtures; repository-local temporary notes must be ignored, for example with `*.local.md`. Mention coverage is bounded by visible notifications, not a complete historical inbox.
 
 ## Workspace templates
 
