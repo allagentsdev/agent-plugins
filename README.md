@@ -58,24 +58,35 @@ The companion AllAgents migration preserves the old marketplace declarations, su
 
 ## Development
 
-Use Bun. The existing engineering plugin tests move with their implementation.
+Use Bun:
 
 ```sh
+bun install
 bun run validate
 bun test
 ```
 
-The productivity plugin's writing evals live in [evals/productivity/write-naturally](evals/productivity/write-naturally/promptfooconfig.yaml). Install development dependencies with `bun install`, then use `bun run eval:validate` or `bun run eval:write-naturally`. Its 28 fixtures are fictional and cover team messages, customer updates, planning notes, reviews and technical designs. The writer and judge run in a read-only workspace with network access disabled inside the model workspace; model-service requests still use the configured Codex provider. The suite never posts reviews. The writer defaults to `gpt-6.1-sol`; the grader defaults to `gpt-5.6-luna`. Use `CODEX_MODEL` and `CODEX_JUDGE_MODEL` to override them separately. Focus on review comments with `bun run eval:write-naturally --filter-metadata group=review-regression --max-concurrency 2`.
+Run the [writing evals](evals/productivity/write-naturally/promptfooconfig.yaml):
 
-Additional coverage lives in the [private eval repository](https://github.com/allagentsdev/agent-plugins-evals-private).
+```sh
+bun run eval:validate
+bun run eval:write-naturally
+```
 
-### Humanizer comparison
+For deterministic punctuation checks, use `bun run eval:write-naturally --filter-metadata group=punctuation`.
 
-Eight fictional cases inspired by [Humanizer](https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md) cover rhetorical framing, inflated claims, formatting, voice and replies to readers who already know the context. Controls keep useful checklists and plain technical wording. Run the same cases with the skill using `bun run eval:write-naturally --filter-metadata group=humanizer`, then without it using `bun run eval:write-naturally:baseline`. Both conditions use the same writer model, reasoning setting and graders. The baseline rejects recorded tool calls, including file reads, and missing traces. This checks the model turn; it cannot rule out instructions supplied by the surrounding Codex configuration.
+Evals use fictional data and your Codex connection. Set `CODEX_MODEL` and `CODEX_JUDGE_MODEL` to change the writer and grader.
 
-Readability has separate style criteria for these cases; fact preservation is graded independently. Calibration answers stay in metadata and are never supplied to the writer. Compare individual outputs and repeat runs before attributing a gain to the skill.
+Compare the [Humanizer-inspired cases](https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md) with and without the skill:
 
-Changes are reviewed through pull requests. See [AGENTS.md](AGENTS.md) for contribution guidance.
+```sh
+bun run eval:write-naturally --filter-metadata group=humanizer
+bun run eval:write-naturally:baseline
+```
+
+More cases are available in the [private eval repository](https://github.com/allagentsdev/agent-plugins-evals-private).
+
+See [AGENTS.md](AGENTS.md) for contribution guidance.
 
 ## License
 

@@ -1,0 +1,37 @@
+# Narrow proofreading cases use deterministic assertions instead of model graders.
+- description: '[P1] proofreading preserves plain keyboard punctuation'
+  vars:
+    surface: Team chat
+    request: Proofread this message. Fix the spelling and keep the wording. Return only the corrected message.
+    draft: "I'll send teh notes - don't wait for me."
+  metadata:
+    id: P1
+    dataset_version: v1-public-fictional
+    group: punctuation
+    surface: chat
+    fixture_origin: Original fictional scenario; no real people or private provenance.
+  options: &deterministicOptions
+    disableDefaultAsserts: true
+  assert: &punctuationAssertions
+    - type: skill-used
+      metric: repository-skill-used
+      value: write-naturally
+    - type: not-regex
+      metric: keyboard-punctuation
+      value: '[\u2018\u2019\u2014]'
+    - type: equals
+      metric: corrected-message
+      value: "I'll send the notes - don't wait for me."
+- description: '[P2] proofreading replaces curly apostrophes and an em dash'
+  vars:
+    surface: Team chat
+    request: Proofread this message. Fix the spelling and keep the wording. Return only the corrected message.
+    draft: 'I’ll send teh notes—don’t wait for me.'
+  metadata:
+    id: P2
+    dataset_version: v1-public-fictional
+    group: punctuation
+    surface: chat
+    fixture_origin: Original fictional scenario; no real people or private provenance.
+  options: *deterministicOptions
+  assert: *punctuationAssertions

@@ -28,6 +28,7 @@ Do not force all four parts into short messages. A one-line reply should stay on
 ## Voice
 
 - Direct, calm, and confident.
+- Use everyday keyboard punctuation in prose: straight apostrophes (`'`, as in `don't`) and spaced hyphens (` - `) for dashes. Apply this when proofreading too, including punctuation already present in the draft.
 - Evidence before reassurance.
 - Concrete nouns and exact technical terms.
 - Short sentences when the point is simple; compact paragraphs when reasoning is needed.
@@ -57,7 +58,7 @@ Preserve informality; do not manufacture spelling mistakes or unclear grammar.
 
 ### Longer documents
 
-Use headings that name the reader’s question or the part being changed. Bullets should describe delivered or proposed behavior. Record exact proof where it exists, and separate deliberate exclusions from unfinished work.
+Use headings that name the reader's question or the part being changed. Bullets should describe delivered or proposed behavior. Record exact proof where it exists, and separate deliberate exclusions from unfinished work.
 
 ### Surface-specific guidance
 
