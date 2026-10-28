@@ -1,6 +1,6 @@
 # Technical designs and architecture documents
 
-Choose the document’s abstraction level before editing. A design explains behavior, boundaries and the mechanisms needed to support its guarantees.
+Choose the document's abstraction level before editing. A design explains behavior, boundaries and the mechanisms needed to support its guarantees.
 
 ## Explain the design before specifying its rules
 
