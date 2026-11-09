@@ -1,0 +1,44 @@
+version: 2
+
+repositories:
+  - path: .
+    description: Design project, source assets and editable deliverables
+    skills: false
+  # Keep Video Use's root skill and helpers in their original repository.
+  # Plugin discovery otherwise selects its nested Manim skill instead.
+  - path: sources/video-use
+    source: github
+    repo: browser-use/video-use
+    managed: clone
+    ref: main
+    description: Read-only upstream Video Use reference and video-editing helpers
+    skills: false
+
+plugins:
+  - source: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/main/.claude
+    install: file
+  - source: https://github.com/remotion-dev/skills
+    install: file
+  - source: https://github.com/LottieFiles/motion-design-skill
+    install: file
+  - source: https://github.com/wuwangzhang1216/DirectorSKILL
+    install: file
+  - source: https://github.com/NousResearch/hermes-agent/tree/main/skills/creative/songwriting-and-ai-music
+    install: file
+    skills: [songwriting-and-ai-music]
+  - source: https://github.com/coreyhaines31/marketingskills
+    install: file
+    skills: [product-marketing, content-strategy, copywriting, ad-creative]
+  - source: https://github.com/JimLiu/baoyu-skills
+    install: file
+    skills: [baoyu-infographic, baoyu-comic]
+  - source: https://github.com/Leonxlnx/earshot
+    install: file
+    skills: [earshot]
+  - source: https://github.com/greensock/gsap-skills
+    install: file
+    skills: [gsap-core, gsap-timeline, gsap-scrolltrigger, gsap-react]
+  - productivity@allagentsdev/agent-plugins
+
+clients:
+  - universal
