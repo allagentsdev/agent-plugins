@@ -1,6 +1,6 @@
 # Agent Plugins
 
-Reusable plugins for AI assistants, maintained by AllAgents. This repository is the plugin catalogue; the [AllAgents CLI and workspace examples](https://github.com/allagentsdev/allagents) remain in their own repository.
+Reusable plugins for AI assistants, maintained by AllAgents. This repository owns the plugin catalogue and [workspace templates](workspaces). The [AllAgents CLI and client adapters](https://github.com/allagentsdev/allagents) remain in their own repository.
 
 ## Install
 
@@ -46,13 +46,24 @@ Save personal selections and private reports in `~/.agents/github-attention.md`,
 
 ## Workspace templates
 
-Workspace templates remain under [allagents/examples/workspaces](https://github.com/allagentsdev/allagents/tree/main/examples/workspaces). They compose plugins from this catalogue and other sources:
+[Workspace templates](workspaces) live beside `plugins/` and compose this
+catalogue with original upstream sources:
 
-```yaml
-plugins:
-  - finance@allagentsdev/agent-plugins
-  - engineering@allagentsdev/agent-plugins
+| Template | Purpose |
+| --- | --- |
+| [Designer](workspaces/designer) | Interfaces, film, video editing, motion, audio review and marketing |
+| [Engineering](workspaces/engineering) | Portable engineering skills and Pi-native tooling |
+| [Finance](workspaces/finance) | Financial models, budgets, forecasts and workpapers |
+
+```sh
+allagents workspace init ./designer \
+  --from allagentsdev/agent-plugins/workspaces/designer
 ```
+
+Read each template's prerequisites first. Skill installation is separate from
+media software, service authentication and paid generation. Engineering and
+Finance were copied from the AllAgents examples; CLI-specific examples remain
+in that repository.
 
 The companion AllAgents migration preserves the old marketplace declarations, such as `finance@allagentsdev/allagents`, through external sources. Direct old directory URLs for the moved plugins do not redirect: replace `allagentsdev/allagents/plugins/<name>` with `<name>@allagentsdev/agent-plugins`. Upgrade AllAgents before using the migrated forwarding marketplace. Pinned historical versions continue to use their original content.
 

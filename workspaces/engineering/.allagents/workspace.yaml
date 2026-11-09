@@ -1,0 +1,57 @@
+version: 2
+
+setup:
+  - run: curl -fsSL https://herdr.dev/install.sh | sh
+    platforms: [linux, darwin]
+  - run: 'powershell -ExecutionPolicy Bypass -c "irm https://herdr.dev/install.ps1 | iex"'
+    platforms: [win32]
+
+repositories: []
+
+plugins:
+  # Enable the complete Compound Engineering plugin from its default branch.
+  - source: https://github.com/EveryInc/compound-engineering-plugin
+
+  # Preserve Matt's upstream composition by installing the selected capabilities
+  # with every helper skill they invoke. The explicit closure prevents unrelated
+  # additions from auto-enabling while keeping each selected workflow complete.
+  - source: https://github.com/mattpocock/skills
+    skills:
+      - engineering/wayfinder
+      - engineering/grill-with-docs
+      - engineering/improve-codebase-architecture
+      - engineering/domain-modeling
+      - engineering/research
+      - engineering/prototype
+      - engineering/codebase-design
+      - engineering/setup-matt-pocock-skills
+      - productivity/grilling
+
+  - source: https://github.com/NousResearch/hermes-agent
+    skills:
+      - research/llm-wiki
+
+  - source: https://github.com/herdrdev/herdr
+    skills:
+      - herdr
+
+  # Pi owns package installation and loading. Explicit client overrides keep
+  # these packages separate from the universal file-mode skills above.
+  # Save project trust and select native CE skills in Pi before initialization;
+  # see ../README.md. Portable CE files otherwise shadow the native skills.
+  # npm packages retain reviewed pins; Compound Engineering follows upstream.
+  - source: npm:pi-web-access@0.37.0
+    clients: [pi]
+    install: native
+  - source: git:github.com/EveryInc/compound-engineering-plugin
+    clients: [pi]
+    install: native
+  - source: npm:pi-subagents@0.76.1
+    clients: [pi]
+    install: native
+  - source: npm:pi-ask-user@0.16.0
+    clients: [pi]
+    install: native
+
+clients:
+  - universal

@@ -1,8 +1,9 @@
 # Agent Plugins contributor guide
 
-This repository owns reusable plugin content under `plugins/`. The AllAgents CLI, client adapters and workspace examples belong in `allagentsdev/allagents`.
+This repository owns reusable plugin content under `plugins/` and workspace templates under the sibling `workspaces/` directory. The AllAgents CLI, client adapters and CLI-specific examples belong in `allagentsdev/allagents`.
 
 - Work on a dedicated branch/worktree from current `origin/main`; publish changes through a pull request. Never push implementation directly to `main` or merge without user authorization. Use conventional commit and PR titles; squash merges.
+- Keep workspace recipes portable. Use original upstream skill sources, preserve copied recipes' behavior, and document software/account prerequisites separately from skill installation.
 - Keep `.claude-plugin/marketplace.json` and `.github/plugin/marketplace.json` aligned for the complete catalogue. Both use the marketplace name `agent-plugins` and local paths to plugin directories.
 - Preserve plugin names, licensing, attribution, executable file modes and supporting resources. Update plugin homepages and local links when moving files.
 - Keep skills scoped to reusable capabilities. Keep household data, private service configuration, credentials and downloaded personal workbooks in their private repositories.
