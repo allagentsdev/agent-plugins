@@ -23,7 +23,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | Plugin | Contents |
 | --- | --- |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
-| [engineering](plugins/engineering) | Interactive PR review and read-only GitHub attention checks |
+| [engineering](plugins/engineering) | Interactive diagrams, PR review, and read-only GitHub attention checks |
 | [productivity](plugins/productivity) | Direct technical writing and behavioral evals |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
@@ -31,6 +31,10 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 The CLI-specific guidance plugin remains in [allagents/plugins/allagents](https://github.com/allagentsdev/allagents/tree/main/plugins/allagents), installed as `allagents@allagentsdev/allagents`.
 
 Some plugins connect to external services; their availability and authentication are governed by those services. The catalogue contains reusable guidance and configurations, not personal credentials or records.
+
+## Interactive diagrams
+
+The engineering plugin includes [Archify](plugins/engineering/skills/archify/SKILL.md) by [tt-a1i](https://github.com/tt-a1i/archify), for interactive diagrams and one-page explainers. See the [engineering plugin guide](plugins/engineering/README.md) for runtime prerequisites, usage, and upstream provenance.
 
 ## GitHub attention
 
@@ -101,4 +105,6 @@ See [AGENTS.md](AGENTS.md) for contribution guidance.
 
 ## License
 
-MIT; the original EntityProcess copyright notice is retained in [LICENSE](LICENSE). Financial-modeling source attribution is retained in the skill's [source notes](plugins/finance/skills/financial-modeling/references/sources.md). The example workbook is original and fictional; third-party example workbooks are linked rather than redistributed.
+Repository-authored content is MIT; the original EntityProcess copyright notice is retained in [LICENSE](LICENSE). Financial-modeling source attribution is retained in the skill's [source notes](plugins/finance/skills/financial-modeling/references/sources.md). The example workbook is original and fictional; third-party example workbooks are linked rather than redistributed.
+
+Archify retains its Apache-2.0 license, historical MIT notices, and third-party terms in its [license and attribution files](plugins/engineering/skills/archify/NOTICE). See its [third-party notices](plugins/engineering/skills/archify/THIRD_PARTY_NOTICES.md) for bundled components, fonts, and brand marks.
