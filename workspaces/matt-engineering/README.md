@@ -7,7 +7,7 @@ Matt Pocock's engineering workflows, installed from the original
 The recipe includes the four skills named in
 [Machina's post](https://x.com/EXM7777/status/2120856056977113363):
 `grill-me`, `to-spec`, `to-tickets`, and `implement`. It also includes every
-Matt skill selected in the [Compound Engineering workspace](../compound-engineering)
+Matt skill selected in the [Engineering workspace](../engineering)
 and the helpers these workflows invoke:
 
 | Skills | Purpose |

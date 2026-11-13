@@ -8,7 +8,7 @@ repository; the CLI and client adapters live in
 | Workspace | Purpose |
 | --- | --- |
 | [Designer](designer) | Interfaces, film, editing, motion, audio review and marketing |
-| [Compound Engineering](compound-engineering) | Portable engineering skills and Pi-native tools |
+| [Engineering](engineering) | Portable engineering skills and Pi-native tools |
 | [Matt Engineering](matt-engineering) | Matt Pocock's requirements, specs, tickets, implementation and design workflows |
 | [Finance](finance) | Financial modeling, budgets, forecasts and workpapers |
 
@@ -19,7 +19,7 @@ allagents workspace init ./designer \
   --from allagentsdev/agent-plugins/workspaces/designer
 ```
 
-Compound Engineering (formerly `engineering`) and Finance were copied from the AllAgents
+Engineering and Finance were copied from the AllAgents
 [engineering](https://github.com/allagentsdev/allagents/tree/782ffc9/examples/workspaces/engineering)
 and [finance](https://github.com/allagentsdev/allagents/tree/782ffc9/examples/workspaces/finance)
 examples. Their workspace declarations are unchanged; their documentation points
@@ -27,5 +27,5 @@ to the copies maintained here. The CLI repository's existing examples remain
 available for users of those earlier URLs.
 
 Templates describe dependencies; they do not grant credentials, provider access
-or permission to spend money. Compound Engineering includes Pi-native packages and
+or permission to spend money. Engineering includes Pi-native packages and
 explicit setup commands: read its trust and installation instructions first.
