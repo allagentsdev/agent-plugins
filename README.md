@@ -56,7 +56,8 @@ catalogue with original upstream sources:
 | Template | Purpose |
 | --- | --- |
 | [Designer](workspaces/designer) | Interfaces, film, video editing, motion, audio review and marketing |
-| [Engineering](workspaces/engineering) | Portable engineering skills and Pi-native tooling |
+| [Compound Engineering](workspaces/compound-engineering) | Portable engineering skills and Pi-native tooling |
+| [Matt Engineering](workspaces/matt-engineering) | Matt Pocock's requirements, specs, tickets, implementation and design workflows |
 | [Finance](workspaces/finance) | Financial models, budgets, forecasts and workpapers |
 
 ```sh
@@ -65,7 +66,8 @@ allagents workspace init ./designer \
 ```
 
 Read each template's prerequisites first. Skill installation is separate from
-media software, service authentication and paid generation. Engineering and
+media software, service authentication and paid generation. Compound Engineering
+(formerly the `engineering` workspace) and
 Finance were copied from the AllAgents examples; CLI-specific examples remain
 in that repository.
 

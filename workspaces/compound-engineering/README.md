@@ -1,4 +1,4 @@
-# Engineering
+# Compound Engineering
 
 One project workspace with portable engineering skills and Pi-native tools.
 The portable sources install into `.agents/skills/` through the `universal`
@@ -38,8 +38,8 @@ Save trust for the actual target directory **before** AllAgents attempts native
 installation:
 
 ```sh
-mkdir engineering-demo
-cd engineering-demo
+mkdir compound-engineering-demo
+cd compound-engineering-demo
 pi
 ```
 
@@ -84,14 +84,14 @@ Then initialize and install the stack:
 
 ```sh
 allagents workspace init . \
-  --from allagentsdev/agent-plugins/workspaces/engineering
+  --from allagentsdev/agent-plugins/workspaces/compound-engineering
 allagents plugin list
 pi list
 pi
 ```
 
 From a local repository checkout, replace `--from` with the absolute path to
-`workspaces/engineering`.
+`workspaces/compound-engineering`.
 
 In the new Pi session, inspect `/subagents-doctor` and the `/skill:ce-` command
 completions. Confirm the Compound Engineering skills are listed and the question
