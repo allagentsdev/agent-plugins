@@ -9,6 +9,7 @@ repository; the CLI and client adapters live in
 | --- | --- |
 | [Designer](designer) | Interfaces, film, editing, motion, audio review and marketing |
 | [Engineering](engineering) | Portable engineering skills and Pi-native tools |
+| [Matt Engineering](matt-engineering) | Matt Pocock's requirements, specs, tickets, implementation and design workflows |
 | [Finance](finance) | Financial modeling, budgets, forecasts and workpapers |
 
 Use the template's README for prerequisites and account setup. For example:

@@ -57,6 +57,7 @@ catalogue with original upstream sources:
 | --- | --- |
 | [Designer](workspaces/designer) | Interfaces, film, video editing, motion, audio review and marketing |
 | [Engineering](workspaces/engineering) | Portable engineering skills and Pi-native tooling |
+| [Matt Engineering](workspaces/matt-engineering) | Matt Pocock's requirements, specs, tickets, implementation and design workflows |
 | [Finance](workspaces/finance) | Financial models, budgets, forecasts and workpapers |
 
 ```sh

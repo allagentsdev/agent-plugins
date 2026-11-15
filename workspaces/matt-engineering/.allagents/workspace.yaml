@@ -1,0 +1,28 @@
+version: 2
+
+repositories: []
+
+plugins:
+  # Install Matt's original workflows and the helper skills they invoke.
+  # An explicit selection keeps unrelated upstream additions out of this recipe.
+  # Use skill names: upstream's manifest declares individual skill directories.
+  - source: https://github.com/mattpocock/skills
+    skills:
+      - grill-me
+      - to-spec
+      - to-tickets
+      - implement
+      - tdd
+      - code-review
+      - wayfinder
+      - grill-with-docs
+      - improve-codebase-architecture
+      - domain-modeling
+      - research
+      - prototype
+      - codebase-design
+      - setup-matt-pocock-skills
+      - grilling
+
+clients:
+  - universal
