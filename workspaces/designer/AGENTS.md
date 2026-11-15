@@ -11,6 +11,7 @@ using its scripts or following its production workflow.
 | Work | Skill or source |
 | --- | --- |
 | Interfaces and design systems | `ui-ux-pro-max` |
+| Interface critique, polish and responsive adaptation | `impeccable` with `critique`, `audit`, `polish` or `adapt` |
 | Story, shots, blocking and continuity | `cinematic-director` |
 | Video composition and rendering | `remotion-best-practices` and its relevant specialist skill |
 | Tutorial editing, retakes, captions and cut decisions | Read `sources/video-use/SKILL.md`; use its original helpers with FFmpeg |
@@ -20,6 +21,11 @@ using its scripts or following its production workflow.
 | Lyrics, song structure and music prompts | `songwriting-and-ai-music` |
 | Positioning, campaigns and copy | `product-marketing`, `content-strategy`, `copywriting`, `ad-creative` |
 | Illustrated explainers | `baoyu-infographic` or `baoyu-comic`, when requested |
+
+For interface work, choose `ui-ux-pro-max` or `impeccable` as the design lead
+for the brief. Use Impeccable's focused commands for review or refinement of a
+named page or component. Read existing `PRODUCT.md` and `DESIGN.md` when present
+and preserve the project's design constraints.
 
 The project root holds working material and deliverables. Treat
 `sources/video-use/` as an unchanged upstream reference. Read its root skill
