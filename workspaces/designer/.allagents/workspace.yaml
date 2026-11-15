@@ -17,6 +17,9 @@ repositories:
 plugins:
   - source: https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/tree/main/.claude
     install: file
+  - source: https://github.com/pbakaus/impeccable/tree/main/.agents
+    install: file
+    skills: [impeccable]
   - source: https://github.com/remotion-dev/skills
     install: file
   - source: https://github.com/LottieFiles/motion-design-skill

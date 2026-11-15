@@ -32,6 +32,7 @@ or create a separate authenticated bot.
 | Source | Purpose |
 | --- | --- |
 | [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Interface and design-system lead |
+| [Impeccable](https://github.com/pbakaus/impeccable) | Design vocabulary, interface critique, polish and responsive adaptation |
 | [Remotion](https://github.com/remotion-dev/skills) | Composition, titles, overlays and rendering |
 | [Motion Design](https://github.com/LottieFiles/motion-design-skill) | Timing, easing, staging and choreography |
 | [DirectorSKILL](https://github.com/wuwangzhang1216/DirectorSKILL) | Story, shot coverage, blocking and continuity |
@@ -42,6 +43,14 @@ or create a separate authenticated bot.
 | [Earshot](https://github.com/Leonxlnx/earshot) | Local audio measurements and model-assisted review |
 | [Official GSAP skills](https://github.com/greensock/gsap-skills) | Core, timelines, ScrollTrigger and React |
 | [Productivity](../../plugins/productivity) | Write Naturally |
+
+Impeccable is installed from the publisher's portable `.agents/` build, with its
+references and launchers unchanged. Choose it or UI UX Pro Max as the design
+lead for a brief, then use focused Impeccable commands on a named target, such as
+`$impeccable critique the pricing cards`, `$impeccable polish settings` or
+`$impeccable adapt the navigation` in Codex. Other agents use their own skill
+invocation syntax. Read existing `PRODUCT.md` and `DESIGN.md` first; Impeccable's
+`init` and `document` commands can capture missing product and design context.
 
 Video Use has a root editing skill and a nested Manim skill. AllAgents' plugin
 discovery prefers the nested directory, so this recipe instead clones the
@@ -59,6 +68,7 @@ generate paid content.
 
 | Primitive | Separate setup |
 | --- | --- |
+| Impeccable | Its launcher uses a bundled engine or downloads it on first use; see the [upstream setup](https://github.com/pbakaus/impeccable#installation) for supported platforms and optional detector hooks/live mode. AllAgents installs the skill only; hooks and harness-level subagents need upstream setup. |
 | FFmpeg and ffprobe | Install through your operating-system package manager |
 | Remotion | Install Node.js and the project's Remotion/React packages; prepare its browser renderer |
 | Video Use | Install Python and its declared dependencies; transcription needs ElevenLabs API access |
