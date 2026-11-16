@@ -1,4 +1,21 @@
-# Fictional nontechnical cases exercise the shared writing guidance.
+# Fictional cases exercise the shared writing and reader guidance.
+- description: '[C14] software explanation starts with a concrete user example'
+  vars:
+    surface: Product support reply
+    request: Explain why saving a shared document failed and what the fix changes. The reader uses the app but does not know its implementation.
+    draft: The authorization preflight selected the first matching membership record. A revoked personal membership shadowed an active team membership for the same document, causing fail-closed rejection before the active grant was evaluated. The repair continues membership selection after a revoked candidate, accepts the active team grant, and still denies writes when no active grant remains. No content was lost and this fix does not restore revoked access.
+    pass_criterion: >-
+      Starts with a recognizable user action and result, such as trying to save a document shared with their team and being refused.
+      Carries the same example through the cause and corrected behavior: an old revoked personal permission was checked first,
+      the valid team permission was never reached, and the fix checks the remaining permissions.
+      Preserves that saving remains denied without active permission, no content was lost, and revoked access is not restored.
+    fails_if: Leads with authorization preflight, membership selection, shadowing or fail-closed terminology that the reader must decode; gives only an abstract summary without a concrete user action; invents a product workflow or verification; implies all saves now succeed or revoked access is restored; or omits the supplied limits.
+  metadata:
+    id: C14
+    dataset_version: v1-public-fictional
+    group: general-writing
+    surface: support-reply
+    fixture_origin: Original fictional scenario; no real people or private provenance.
 - description: '[C11] casual scheduling message stays short and factual'
   vars:
     surface: Team chat

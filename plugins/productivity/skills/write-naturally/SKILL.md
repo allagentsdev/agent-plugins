@@ -1,6 +1,6 @@
 ---
 name: write-naturally
-description: Write or rewrite messages, reviews, pull-request descriptions, design notes, and technical prose in a direct, evidence-led, natural style. Use when the user asks to "write naturally", "write like a human", "write in my style", polish a comment, or make prose sound natural.
+description: Write or rewrite messages, reviews, pull-request descriptions, design notes, and technical prose in a direct, evidence-led, natural style. Use when the user asks to "write naturally", "write like a human", "write in my style", polish a comment, make prose sound natural, or explain software behavior to a non-specialist.
 metadata:
   source: https://github.com/allagentsdev/agent-plugins/tree/main/plugins/productivity/skills/write-naturally
 ---
@@ -14,7 +14,7 @@ The voice is direct, technically precise, and proportionate to the medium. It ca
 ## The shape
 
 Lead with the point. Then give only the context needed to support it.
-When the user asks for plain English, preserve the contract rather than the source's compressed wording. Do not carry unexplained shorthand into the rewrite. Replace it with the responsible actor, observable action and relevant condition; keep the specialist term only after that explanation and only when the reader still needs it.
+Make the behavior understandable at the reader's level without waiting for a plain-English request. Replace unexplained shorthand with the responsible actor, observable action and relevant condition; keep the specialist term only after that explanation and only when the reader still needs it.
 
 For technical writing, prefer this order:
 
@@ -73,7 +73,11 @@ Ordinary messages and other prose use the shared guidance here.
 
 Write for the person receiving the text. After a discussion, use the latest agreed position and the evidence that still supports it. Include only history the recipient needs to understand or act; keep explanations of the drafting process in the conversation with the requester.
 
-Make abstract concerns concrete with a short example when it helps. Show the person affected, the triggering condition, what happens and why it matters. Use supplied evidence for factual examples, label hypothetical illustrations, and claim verification only when it was provided.
+For explanations of software behavior and user-facing bugs, start with a concrete situation the reader recognizes: what they do and what happens. Carry the same example through the cause and the proposed or verified change. Introduce internal names where they explain that behavior. Keep this sequence short, and adapt it when the reader already knows the example or explicitly needs implementation detail.
+
+For example: "You select Claude and install a plugin. The installer opens a description file for another tool first and rejects the plugin before reading its valid Claude file. The fix skips that unsupported description and continues to the Claude file."
+
+The reader should be able to follow that sequence without translating internal terminology or asking for a second explanation. Use supplied evidence for factual examples, label hypothetical illustrations, and claim verification only when it was provided. Keep causal reasoning in connected prose; a brief factual example needs no invented characters or narrative padding.
 
 Frame recommendations as shared decisions: `We should …` for a requested change or `We can …` for a concrete proposal. Keep the boundary or limit firm; collaborative wording need not make it tentative. These are examples, not required openings. Classify force from the user's description and surrounding context, not grammatical mood alone. When the request identifies the source as a recommendation or proposal, turn a bare imperative into a collaborative statement. Politeness still does not determine force: a sentence beginning `Please keep …` may instead express a command, requirement, or acceptance criterion. Preserve those as obligations rather than recasting them as optional or tentative language.
 
@@ -106,7 +110,7 @@ Use certainty deliberately:
 7. Build a private checklist of source guarantees expressed with `must`, `never`, `only`, `prevents`, `cannot` or equivalent language. Confirm the rewrite preserves the same actor, action and object for each one. A related mechanism does not count as the same guarantee. Compare exact identifiers, numbers and link destinations character for character when they remain in scope.
 8. Read the result once for voice and once for level of detail. It should sound like a colleague explaining the subject.
 9. Check boundary words separately: `all`, `any`, `before`, `after`, `exactly`, `at most`, units, and scope such as one attempt versus the whole request. Smoother wording is wrong if it changes the threshold. `Uses the remaining allowance` does not preserve `uses all the remaining allowance`.
-10. When plain English is requested, inspect the result for source shorthand such as `I/O`, `invariant`, `surface`, `pre-call` or an unexplained accounting label. Replace it with behavior or define it through a concrete example. A polished label still fails if the reader must decode it.
+10. Inspect the result for shorthand the intended reader would have to decode, such as `I/O`, `invariant`, `surface`, `pre-call` or an unexplained accounting label. Replace it with behavior or define it through the example. For a software explanation, check that the reader can follow the user action, result, cause and change without knowing the implementation first.
 11. Read it from the recipient's position: can they understand the point, evidence and next action without the drafting conversation?
 
 ## Guardrails
