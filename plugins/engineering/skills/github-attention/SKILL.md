@@ -1,6 +1,6 @@
 ---
 name: github-attention
-description: Check selected GitHub repositories for review requests, mentions, replies, assigned issues, and action on your own PRs. Use for a personal GitHub attention check, not repository-wide issue triage or performing reviews.
+description: Check selected GitHub repositories for personal mentions, non-draft PRs awaiting your review, replies, assigned issues, and action on your own ready PRs. Draft mentions are response-only candidates. Use for personal GitHub attention, not repository-wide triage or performing reviews.
 ---
 
 # GitHub Attention
@@ -19,10 +19,16 @@ Produce a prioritised, deduplicated attention report for an explicit list of `ow
    ```
 
    Use the actual skill directory, not the current project directory. No dependency installation is needed. A missing login or access failure is a local prerequisite, not a reason to request credentials in chat. The helper exits `2` on incomplete coverage and still prints any available report; retain its coverage warnings.
-3. Present the report concisely, preserving reasons, links and coverage gaps. Each issue/PR appears once, in its highest-priority section. Current direct review requests outrank prior approvals, including re-requests on an unchanged head. A shared team request after your approval is informational: its timing is unavailable, so it does not prove a new personal request. Dismissed reviews and commits since your last decision are review candidates, not proof that branch policy requires another approval. Already-approved unchanged PRs are not new personal review work without a direct re-request.
+3. Present the report concisely, preserving reasons, links and coverage gaps. Each issue/PR appears once, in its highest-priority section. Apply the draft policy below before routing any review work. For non-draft PRs, current direct review requests outrank prior approvals, including re-requests on an unchanged head. A shared team request after your approval is informational: its timing is unavailable, so it does not prove a new personal request. Dismissed reviews and commits since your last decision are review candidates, not proof that branch policy requires another approval. Already-approved unchanged PRs are not new personal review work without a direct re-request.
 4. For conversation candidates, distinguish an actual unresolved request from an informational update only when the thread provides evidence. The helper intentionally reports mentions/replies as informational candidates with resolution unknown. If the user needs a decision, inspect only those selected-repository threads using paginated read-only `gh api` GETs: `repos/OWNER/REPO/issues/NUMBER/comments`, plus `pulls/NUMBER/reviews` and `pulls/NUMBER/comments` for PRs. Include the specific comment link when available. A reply elsewhere in the PR does not resolve a thread. Do not claim every historical mention has been found or resolved.
 
 Completion: the report covers the supplied selection, says why each item matters, separates **needs your action**, **waiting on others**, and **informational**, and retains any unavailable coverage. Empty sections mean no items found in covered data, not a guarantee of no work.
+
+## Draft policy
+
+Keep draft PRs out of review and authored-PR action queues, even when a direct/team review request, re-request, dismissed review or new commit would otherwise make them candidates. A review request is not a personal mention.
+
+A personal `@handle` mention in a draft's description, comments or review conversation, or a direct-mention notification, may surface under **informational** for a possible response. Team mentions, replies and participation updates alone do not qualify. Preserve uncertainty when only the notification signal remains. Inspect the conversation to decide whether a response is useful; review draft code only when the user explicitly asks to review that draft. Mentioning the user or asking for a response does not grant review permission.
 
 ## Boundaries
 

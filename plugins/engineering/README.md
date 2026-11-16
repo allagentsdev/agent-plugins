@@ -47,5 +47,5 @@ Archify is Apache-2.0 with historical MIT notices. Preserve its [LICENSE](skills
 
 ## Other skills
 
-- [github-attention](skills/github-attention/SKILL.md): read-only checks of explicitly selected GitHub repositories, using Bun and an authenticated `gh` CLI.
+- [github-attention](skills/github-attention/SKILL.md): read-only checks of explicitly selected GitHub repositories, using Bun and an authenticated `gh` CLI. Non-draft review work and personal mentions surface for attention; draft PRs surface only for personal mentions and possible responses, with code review requiring an explicit user request.
 - [pr-interactive-review](skills/pr-interactive-review/SKILL.md): a local interactive site for structured PR review findings.

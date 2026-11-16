@@ -50,6 +50,7 @@ function pr(number: number, author = 'someone', sha = 'current') {
     id: number,
     number,
     state: 'open',
+    draft: false,
     title: `Work ${number}`,
     user: { login: author },
     head: { sha },
@@ -415,6 +416,23 @@ describe('github-attention review decisions', () => {
     expect(reasons([review(1, 'APPROVED')], [{ login: 'alice' }], teams, new Set([7])))
       .toEqual([[0, expect.stringContaining('Direct review')]]);
   });
+
+  it('lets draft status override direct, shared and renewed review signals', () => {
+    const cases = [
+      { reviews: [], users: [{ login: 'alice' }], teams: [] },
+      { reviews: [], users: [], teams: [{ id: 7, slug: 'reviewers' }] },
+      { reviews: [review(1, 'APPROVED')], users: [{ login: 'alice' }], teams: [] },
+      { reviews: [review(1, 'DISMISSED')], users: [], teams: [] },
+      { reviews: [review(1, 'APPROVED', 'old')], users: [], teams: [] },
+      { reviews: [review(1, 'CHANGES_REQUESTED', 'old')], users: [], teams: [] },
+    ];
+    for (const { reviews, users, teams } of cases) {
+      expect(reviewReasons({ ...pr(1), draft: true }, reviews, users, teams, new Set([7]), 'alice'))
+        .toEqual([]);
+      expect(reviewReasons({ ...pr(1), draft: false }, reviews, users, teams, new Set([7]), 'alice'))
+        .toEqual([expect.any(Array)]);
+    }
+  });
 });
 
 describe('github-attention exact-head CI evidence', () => {
@@ -462,6 +480,83 @@ describe('github-attention exact-head CI evidence', () => {
 });
 
 describe('github-attention report collection', () => {
+  it('keeps drafts out of review, waiting and authored-PR action queues', async () => {
+    const data = authoredData({ ...pr(7, 'alice'), draft: true }, {
+      reviews: [review(1, 'CHANGES_REQUESTED', 'current', 'bob')],
+      detail: { mergeable_state: 'dirty' },
+      checks: [{ id: 1, name: 'build', status: 'completed', conclusion: 'failure' }],
+    });
+    addPr(data, { ...pr(1), draft: true }, { users: [{ login: 'alice' }] });
+    addPr(data, { ...pr(2), draft: true }, { teams: [{ id: 7, slug: 'reviewers' }] });
+    addPr(data, { ...pr(3), draft: true }, { reviews: [review(1, 'DISMISSED')] });
+    addPr(data, { ...pr(4), draft: true }, { reviews: [review(1, 'APPROVED', 'old')] });
+    addPr(data, { ...pr(5), draft: true }, { reviews: [review(1, 'CHANGES_REQUESTED')] });
+    addPr(data, { ...pr(6), draft: true }, {
+      reviews: [review(1, 'APPROVED')], teams: [{ id: 7, slug: 'reviewers' }],
+    });
+    addPr(data, { ...pr(8), draft: false }, { users: [{ login: 'alice' }] });
+    const { report } = await collect(data);
+    expect([...report.items.values()].map(({ number, section }) => ({ number, section })))
+      .toEqual([{ number: 8, section: 0 }]);
+    expect(report.suppressed).toBe(0);
+  });
+
+  it('surfaces only personal draft mentions as response-only conversation candidates', async () => {
+    const cases = [
+      { body: '@ALICE a question', expected: true },
+      { comment: '@alice a question', expected: true },
+      { inline: '@alice a question', expected: true },
+      { reviewBody: '@alice a question', expected: true },
+      { reason: 'mention', expected: true },
+      { body: '@Example/reviewers a question', reason: 'team_mention', expected: false },
+      { reply: true, reason: 'comment', expected: false },
+      { comment: '@alice', commenter: 'alice', reason: 'comment', expected: false },
+      { body: '@alice-other user@alice.example @alice/reviewers', expected: false },
+      { expected: false },
+    ];
+    for (const scenario of cases) {
+      const data = baseData();
+      addPr(data, { ...pr(1), draft: true, body: scenario.body ?? '' }, {
+        users: [{ login: 'alice' }], teams: [{ id: 7, slug: 'reviewers' }],
+        reviews: [{ ...review(1, 'DISMISSED'), body: scenario.reviewBody ?? '', user: { login: 'bob' } }],
+      });
+      data[endpoint(REPO, 'notifications', { all: 'true', since: SINCE })] = [[notification(1, scenario.reason ?? 'review_requested')]];
+      data[endpoint(REPO, 'issues/1/comments')] = [[{
+        id: 2, body: scenario.comment ?? '', user: { login: scenario.commenter ?? 'bob' },
+      }]];
+      data[endpoint(REPO, 'pulls/1/comments')] = [[
+        { id: 3, body: 'question', user: { login: 'alice' } },
+        { id: 4, body: scenario.inline ?? '', user: { login: 'bob' }, in_reply_to_id: scenario.reply ? 3 : undefined },
+      ]];
+      const { report } = await collect(data);
+      expect([...report.items.values()].map(({ number, section }) => ({ number, section })))
+        .toEqual(scenario.expected ? [{ number: 1, section: 2 }] : []);
+      if (scenario.expected) {
+        const [reason] = report.items.get('example/widget#1')!.reasons;
+        expect(reason).toContain('Direct mention');
+        expect(reason).toContain('response/resolution unknown');
+        expect(reason).toContain('possible response only');
+        expect(reason).toContain('no code review unless you explicitly ask');
+      }
+    }
+  });
+
+  it('keeps a mentioned draft response-only when the current PR list is unavailable', async () => {
+    const data = baseData();
+    data[endpoint(REPO, 'pulls', { state: 'open' })] = new ApiError('HTTP 403');
+    data[`repos/${REPO}/pulls/1`] = [{ ...pr(1), draft: true }];
+    data[endpoint(REPO, 'notifications', { all: 'true', since: SINCE })] = [[notification(1)]];
+    data[endpoint(REPO, 'issues/1/comments')] = [[]];
+    data[endpoint(REPO, 'pulls/1/comments')] = [[]];
+    const { report } = await collect(data);
+    expect([...report.items.values()].map(({ number, section }) => ({ number, section })))
+      .toEqual([{ number: 1, section: 2 }]);
+    expect(report.items.get('example/widget#1')?.reasons).toEqual([
+      expect.stringContaining('possible response only; no code review unless you explicitly ask'),
+    ]);
+    expect(report.warnings).toEqual([expect.stringContaining('pulls: HTTP 403')]);
+  });
+
   it('uses current work over stale notifications, deduplicates items and only queries selected repositories', async () => {
     const data = baseData();
     addPr(data, pr(1), { reviews: [review(1, 'APPROVED')], users: [{ login: 'alice' }] });
