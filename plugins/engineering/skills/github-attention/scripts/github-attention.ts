@@ -121,6 +121,7 @@ export function latestReviews(reviews: Row[]): Map<string, Row> {
 }
 
 export function reviewReasons(pr: Row, reviews: Row[], users: Row[], teams: Row[], memberships: Set<number> | null, login: string): Array<[number, string]> {
+  if (pr.draft) return [];
   const reasons: Array<[number, string]> = [];
   const previous = latestReviews(reviews).get(login.toLowerCase());
   const approvedHead = previous?.state === 'APPROVED' && previous.commit_id === pr.head.sha;
@@ -229,6 +230,7 @@ export class Report {
       const number = pr.number;
       const reviews = await this.rows(repo, `pulls/${number}/reviews`);
       reviewCache.set(number, reviews);
+      if (pr.draft) continue;
       if (pr.user.login.toLowerCase() === this.login.toLowerCase()) {
         await this.authored(repo, pr, reviews);
         continue;
@@ -311,15 +313,18 @@ export class Report {
       team ||= [...mentions].some(handle => teamHandles.has(handle));
       replies ||= ownIds.has(row.in_reply_to_id);
     }
+    const directMention = direct || notification.reason === 'mention';
+    if (item.draft && !directMention) return;
     const signals: string[] = [];
-    if (direct || notification.reason === 'mention') signals.push(`Direct mention${direct ? ' in conversation' : ' signal from notification'}`);
+    if (directMention) signals.push(`Direct mention${direct ? ' in conversation' : ' signal from notification'}`);
     if (team || notification.reason === 'team_mention') signals.push(`Team mention${team ? ' in conversation' : ' signal from notification'}`);
     if (replies) signals.push('Reply to your review comment');
     if (!signals.length) {
       if (!['comment', 'author'].includes(notification.reason)) return;
       signals.push('Conversation update after participation (not necessarily a reply to you)');
     }
-    this.add(repo, item, 2, `${signals.join('; ')}; updated ${notification.updated_at}; response/resolution unknown, inspect thread`);
+    const next = item.draft ? 'draft PR: possible response only; no code review unless you explicitly ask' : 'inspect thread';
+    this.add(repo, item, 2, `${signals.join('; ')}; updated ${notification.updated_at}; response/resolution unknown, ${next}`);
   }
 
   render(): string {
@@ -338,6 +343,7 @@ export class Report {
       `- ${this.suppressed} already-approved, unchanged PRs not flagged for another personal review.`,
       '- Current open PRs, review requests/review history and assignments queried directly; notifications are not the work queue. All list endpoints paginated; no Search API or its 1,000-result cap used.',
       '- Read/unread notification threads included. Mentions/replies are bounded candidates, not unresolved tasks: done/archived, undelivered, older, inaccessible and Discussion activity may be missing. Conversation mentions can predate the notification update.',
+      '- Draft PRs excluded from review and authored-PR action queues. Personal mentions may surface for a possible response only; reviewing a draft requires your explicit instruction.',
       '- Team matching uses visible memberships; nested/hidden teams can leave gaps. Direct re-requests override prior approval; a shared team request alone does not establish a new personal request after approval of this head.',
       '- CI inspects latest check runs, statuses and exact-head workflows, including workflow_dispatch; successes do not establish required checks or merge readiness. Check runs cover at most the 1,000 most recent suites; filtered workflow runs cap at 1,000 results (warned when reached). Empty rollups do not establish missing CI.',
       '- Read-only snapshot, not atomic; current requests and new commits can change during collection.');
