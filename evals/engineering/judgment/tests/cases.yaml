@@ -1,0 +1,162 @@
+- description: Scope an explicit checkout plan to the reported race
+  metadata: { group: public-derived }
+  vars:
+    skill: ce-doc-review
+    persona: scope-guardian-reviewer
+    scenario: |
+      Review this proposed plan before implementation. The request is to prevent a harmless
+      offscreen checkout note from triggering payment approval while preserving approval for
+      genuine payments and the conservative page-wide fallback for unresolved targets.
+
+      In Chromium, with smooth scrolling and a visible gift-card payment button, an offscreen note
+      triggers a false approval while the same note already in view yields no purchase. The helper
+      requests scroll-into-view, reads the box immediately, and falls back when it is offscreen.
+
+      Plan units commit to waiting for a stable visible box (up to 2 seconds per target), a shared
+      8-second wall-clock deadline carried through the serial action loop and timeout plumbing,
+      and a second control read before dispatch. The deadline counts all intervening work and
+      a target reached after it expires gets no scroll attempt. No batch latency contract, measured
+      batch issue, or naturally occurring control replacement is supplied. A constructed browser
+      scenario can replace a control, but no result shows that the reread is needed for the reported bug. Verification adds a browser matrix
+      for document and nested scrolling, batched notes, changed totals, replaced controls, and
+      unreachable targets. Existing unit tests cover changed totals, unreachable-target fallback,
+      and refusal of an unapproved payment.
+    passes_if: |
+      Tie the false positive to premature geometry and propose a bounded target-local wait or
+      equivalent scoped fix. Explain why the shared timer is unjustified here and how elapsed
+      work can deny a later target its opportunity. Treat the dispatch reread as a separate safeguard
+      that can detect some replacements, without atomically binding the verdict to the click.
+      Defer it unless its necessity is shown. Preserve approval and fallback. Keep a focused real-browser regression
+      or equivalent runtime proof for the reproduced timing issue and justify narrowing the matrix.
+      Assess the proposed plan's scope even if its implementation would faithfully match the plan.
+    fails_if: |
+      Rubber-stamp the plan because it is explicit, add a batch budget without evidence, suppress
+      the conservative fallback, or delete meaningful browser proof merely to shorten the change.
+
+- description: Triage review feedback on a small checkout change
+  metadata: { group: public-derived, baseline: representative }
+  vars:
+    skill: ce-code-review
+    persona: maintainability-reviewer
+    scenario: |
+      Review a patch for an offscreen note that was mistaken for a gift-card payment during smooth
+      scrolling. After requesting scroll-into-view, the patch samples the box every 50 ms until
+      two reads match or a 1.5-second per-target timeout ends, then uses existing classification.
+      Unresolved targets still reach the page-wide payment fallback. Scripted unit tests cover
+      moving then visible geometry and fallback. Existing unapproved-payment tests pass.
+      The original report gives a reproducible Chromium page. This patch has no Chromium result.
+
+      Review comments request (1) adding a shared deadline because a long batch could accumulate
+      waits, (2) requiring visible geometry before settling because the first two offscreen samples
+      might match before scrolling starts, and (3) adding a general checkout orchestration layer
+      with a broad browser matrix. No batch latency requirement, measured slowdown, or observed
+      premature equal offscreen samples is supplied. Assess what to act on now, what to verify,
+      and what to decline or handle separately.
+    passes_if: |
+      Decline or split the unsubstantiated deadline and general layer. Treat stable offscreen
+      samples as a plausible timing gap pending evidence and explain that the existing fallback
+      can produce the false prompt in that case. Specify focused Chromium evidence through the
+      real scroll, geometry, and hit-test path, with an observable note outcome and the approval
+      boundary preserved. A small visibility condition is eligible if justified without asserting
+      an observed failure or giving up the bounded conservative fallback.
+    fails_if: |
+      Treat reviewer requests as an implementation queue, assert that the timing risk was
+      reproduced or is impossible, claim the unit tests settle browser behavior, or disable fallback.
+
+- description: Keep a shared deadline when the caller has one
+  metadata: { group: synthetic, baseline: representative }
+  vars:
+    skill: ce-doc-review
+    persona: scope-guardian-reviewer
+    scenario: |
+      Original synthetic plan. An invoice preview service reads headings from up to 12 embedded
+      panels. A stalled panel can consume 750 ms. A staging trace shows a serial request spends
+      8.4 seconds waiting across panels. The caller terminates at 3 seconds and loses completed
+      previews. The product contract requires returning completed previews plus explicit
+      unavailable statuses by 2.5 seconds. It permits skipping panels after the budget is used.
+      The existing request context carries cancellation but panel queries never receive it.
+
+      The plan passes an absolute deadline through the existing context, caps each panel wait by
+      the lesser of its local limit and the remaining request budget, reserves time for response
+      serialization, and returns partial results on budget expiry. It adds a separate global
+      queue-policy interface for hypothetical future APIs. A reviewer proposes keeping only fixed
+      per-panel waits and omitting the deadline to avoid shared state.
+    passes_if: |
+      Preserve a request-wide bound or offer a concrete alternative that meets the measured
+      caller contract, including time to return partial results. Explain why fixed local waits
+      alone are inadequate and why global policy plumbing has no shown consumer. Cover both
+      completed and unavailable outcomes near the deadline with a focused test.
+    fails_if: |
+      Reject all shared deadlines, let timeout discard partial data, endorse new global policies
+      by default, or require an attempt for every panel regardless of the explicit deadline.
+
+- description: Retain a transaction safeguard after an observed replay
+  metadata: { group: synthetic }
+  vars:
+    skill: ce-code-review
+    persona: maintainability-reviewer
+    scenario: |
+      Original synthetic patch. An operator approves an exact invoice payout amount and payee.
+      After a provider creates a payout, a proxy times out before the worker receives the response.
+      A captured staging replay without an idempotency key created a second payout. The provider
+      contract deduplicates retries with the same key for the job's entire retry window. The job
+      already records a durable authorization ID which is unique per payout and whose amount
+      and payee cannot change. The patch uses that ID as the key on every attempt and adds one
+      provider-contract replay test. A proposed simplification removes the key and rereads the
+      approval before retrying. The patch also introduces a one-implementation retry factory
+      which delegates directly to the existing queue retry policy.
+    passes_if: |
+      Keep stable provider-side deduplication or an equally strong evidenced mechanism, explaining
+      why rechecking approval cannot prevent the duplicate after the ambiguous timeout. Preserve
+      the approval contract and verify the visible payout count and distinct authorizations.
+      Remove or justify the factory independently from the safeguard.
+    fails_if: |
+      Remove the safeguard for brevity, substitute a second approval read for deduplication,
+      or retain the factory merely because a justified safeguard is nearby.
+
+- description: Keep the browser test that exercises the changed boundary
+  metadata: { group: synthetic }
+  vars:
+    skill: ce-code-review
+    persona: maintainability-reviewer
+    scenario: |
+      Original synthetic patch. In a drawing editor, keyboard focus should move to a real toolbar
+      control while a fixed palette is closing. On Chromium the saved brush never changes
+      because focus lands on the palette's disappearing DOM node. A patch waits for the
+      palette to close before moving focus. Existing component tests mock focus calls and cover
+      toolbar navigation and persistence. A new browser test executes the keyboard sequence and
+      confirms focus plus the saved brush. It fails against the prior code. The patch also adds eight
+      copied browser scenarios for save formats which never open the palette and are already
+      covered by storage integration tests. A review comment asks to delete all browser tests
+      because the suite already calls the focus mock.
+    passes_if: |
+      Keep the focused regression or an equivalent real DOM integration test and explain which
+      browser behavior the mock cannot establish. Drop or move the unrelated duplicated cases
+      absent separate evidence. Ground the recommendation in observed behavior and observable
+      outcomes instead of setup assertions.
+    fails_if: |
+      Accept removal of the only real integration proof based on mock coverage or keep all eight
+      duplicates without explaining distinct coverage.
+
+- description: Accept a verified minimal plan without inventing work
+  metadata: { group: synthetic }
+  vars:
+    skill: ce-doc-review
+    persona: scope-guardian-reviewer
+    scenario: |
+      Original synthetic plan. A report download inserts an extra blank CSV row when its input
+      already ends in a newline. The format contract requires exactly one terminal newline and
+      preserves empty records inside the report. A failing test runs through the download API
+      with an embedded empty record and an already-terminated input, and asserts the exact output
+      bytes. The plan uses the existing serializer's final-record terminator instead of appending
+      another one in the download handler. Existing export tests cover the unterminated and empty
+      input forms. Inspection shows both exports use this handler and the shared serializer already
+      implements the format contract. A reviewer proposes a new format configuration registry and
+      a browser matrix for every report type based on hypothetical future formats.
+    passes_if: |
+      Accept the scoped approach, explain how it preserves the exact format contract and interior
+      empty records, and decline the registry and matrix absent a consumer or browser-specific
+      failure. The API byte-level check and existing coverage can be sufficient here.
+    fails_if: |
+      Invent a defect to justify a finding, mandate an additional browser test by default, add
+      hypothetical format support, or propose trimming interior empty records.
