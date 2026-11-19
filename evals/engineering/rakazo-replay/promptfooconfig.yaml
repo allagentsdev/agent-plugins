@@ -1,0 +1,60 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Offline Rakazo implementation replay with and without AGENTS.md scope guidance
+
+prompts:
+  - file://task.md
+
+providers:
+  - id: package:oh-my-promptfoo/providers:Agent
+    label: baseline
+    config: &replay
+      delegate:
+        id: openai:codex-sdk
+        config:
+          model: '{{ env.CODEX_MODEL | default("gpt-6.2-sol") }}'
+          model_reasoning_effort: medium
+          sandbox_mode: workspace-write
+          approval_policy: never
+          network_access_enabled: false
+          web_search_enabled: false
+          maxRetries: 0
+          codex_path_override: "{{env.REPLAY_CODEX_LAUNCHER}}"
+      fileChanges: true
+      timeoutMs: 900000
+      workspace:
+        sources:
+          - &rakazo
+            type: git
+            repository: '{{env.REPLAY_RAKAZO_SOURCE}}'
+            ref: 92eeb44a40f95caab81c8ae46bf2428a87a64ca5
+            destination: rakazo
+          - &ce
+            type: git
+            repository: '{{env.REPLAY_CE_SOURCE}}'
+            ref: d8f8e03237bded06e77bcb3930b43ef841e7eeda
+            destination: compound-engineering
+            permissions: read-only
+          - type: local
+            path: ./baseline
+            destination: task
+  - id: package:oh-my-promptfoo/providers:Agent
+    label: guided
+    config:
+      <<: *replay
+      workspace:
+        sources:
+          - *rakazo
+          - *ce
+          - type: local
+            path: ./guided
+            destination: task
+
+tests:
+  - description: Smooth scrolling checkout
+    assert:
+      - type: skill-used
+        metric: ce-work-read
+        value: ce-work
+      - type: javascript
+        metric: chromium-checkout
+        value: file://browser-check.mjs

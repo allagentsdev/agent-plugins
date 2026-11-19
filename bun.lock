@@ -6,6 +6,7 @@
       "name": "@allagents/agent-plugins",
       "devDependencies": {
         "@openai/codex-sdk": "0.162.1",
+        "oh-my-promptfoo": "1.27.0",
         "promptfoo": "0.124.1",
       },
     },
@@ -914,6 +915,8 @@
     "object-assign": ["object-assign@4.1.1", "", {}, "sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg=="],
 
     "object-inspect": ["object-inspect@1.13.4", "", {}, "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew=="],
+
+    "oh-my-promptfoo": ["oh-my-promptfoo@1.27.0", "", { "peerDependencies": { "@earendil-works/pi-coding-agent": "1.3.0", "@github/copilot-sdk": "1.0.22", "promptfoo": "0.122.x || 0.124.x || 0.125.x" }, "optionalPeers": ["@earendil-works/pi-coding-agent", "@github/copilot-sdk"], "bin": { "allagents-promptfoo": "dist/cli.js" } }, "sha512-0eKW2HSQFeaObDVFDn7XmTXmvr6bZBCLonBJzclcoXjZjJfw7HfFSKco80UKpOWIOpGBkHVYNlgQu91M+pji6w=="],
 
     "on-finished": ["on-finished@2.4.1", "", { "dependencies": { "ee-first": "1.1.1" } }, "sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg=="],
 
