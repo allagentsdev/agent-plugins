@@ -43,7 +43,7 @@ export REPLAY_CE_SOURCE="file://$inputs/compound-engineering"
 export REPLAY_AGENT_BROWSER="$inputs/bin/agent-browser"
 export REPLAY_CHROMIUM=/absolute/path/to/chrome
 suite=evals/engineering/rakazo-replay
-export REPLAY_CODEX_BIN="$(command -v codex)"
+export REPLAY_CODEX_BIN="$PWD/node_modules/.bin/codex"
 export REPLAY_CODEX_LAUNCHER="$PWD/$suite/codex-replay.sh"
 export ALLAGENTS_WORKSPACE_ROOT="$inputs/workspaces"
 bun run promptfoo validate config -c "$suite/promptfooconfig.yaml"
@@ -54,7 +54,8 @@ bun run promptfoo eval -c "$suite/promptfooconfig.yaml" \
 Use the same Chromium build across variants. The fixture was exercised with
 Chrome for Testing 156.0.8078.4 and Rakazo's pinned agent-browser 0.41.0. The
 Chromium directory must contain its runtime files. The run uses the Codex
-binary selected before invoking Bun and its authenticated model connection.
+CLI installed by the pinned SDK. Promptfoo requires the launcher and SDK to
+report the same CLI version.
 Codex CLI 0.166.0 accepted `gpt-6.2-sol` with the test login. The SDK-bundled
 0.162.1 binary rejected that model on the same login. Set `CODEX_MODEL` to
 change the candidate model for both variants. oh-my-promptfoo manages the two

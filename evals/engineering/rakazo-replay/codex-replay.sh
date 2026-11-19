@@ -6,6 +6,9 @@ if [ "${1:-}" = exec ]; then
   workspace=
   previous=
   for argument do
+    if [ "$argument" = --version ]; then
+      exec "$codex_bin" "$@"
+    fi
     if [ "$previous" = --cd ]; then
       workspace=$argument
       break
