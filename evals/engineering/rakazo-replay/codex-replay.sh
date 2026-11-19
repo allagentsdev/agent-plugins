@@ -18,5 +18,7 @@ if [ "${1:-}" = exec ]; then
   cp "$workspace/task/AGENTS.md" "$workspace/AGENTS.md"
   mkdir -p "$workspace/.agents/skills"
   cp -R "$workspace/compound-engineering/skills/ce-work" "$workspace/.agents/skills/"
+  shift
+  exec codex exec --ignore-user-config "$@"
 fi
-exec codex --ignore-user-config "$@"
+exec codex "$@"
