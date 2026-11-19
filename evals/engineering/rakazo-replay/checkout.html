@@ -1,0 +1,13 @@
+<!doctype html>
+<title>Checkout</title>
+<style>
+  html { scroll-behavior: smooth }
+  #payment { position: fixed; top: 10px; right: 10px }
+  #note { display: block; margin-top: 1500px }
+  footer { height: 1000px }
+</style>
+<div id="payment"><p>Total: $5.00</p><button>Pay using Gift Card</button></div>
+<button id="note" type="button" onclick="window.notes++; document.title = 'Note opened'">Add shopper note</button>
+<form onsubmit="event.preventDefault(); window.orders++; document.title = 'Order placed'"><button>Place order</button></form>
+<footer></footer>
+<script>window.notes = 0; window.orders = 0;</script>

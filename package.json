@@ -9,7 +9,8 @@
     "eval:write-naturally:baseline": "bun run scripts/eval-writing-baseline.ts evals/productivity/write-naturally"
   },
   "devDependencies": {
-    "@openai/codex-sdk": "0.162.1",
-    "promptfoo": "0.124.1"
+    "@openai/codex-sdk": "0.166.0",
+    "oh-my-promptfoo": "1.31.2",
+    "promptfoo": "0.126.0"
   }
 }
