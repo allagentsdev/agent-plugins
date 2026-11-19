@@ -17,6 +17,8 @@ providers:
           approval_policy: never
           network_access_enabled: false
           web_search_enabled: false
+          cli_config:
+            sandbox_workspace_write.exclude_slash_tmp: true
           maxRetries: 0
           codex_path_override: "{{env.REPLAY_CODEX_LAUNCHER}}"
       fileChanges: true

@@ -18,6 +18,8 @@ if [ "${1:-}" = exec ]; then
   cp "$workspace/task/AGENTS.md" "$workspace/AGENTS.md"
   mkdir -p "$workspace/.agents/skills"
   cp -R "$workspace/compound-engineering/skills/ce-work" "$workspace/.agents/skills/"
+  mkdir "$workspace/tmp"
+  export TMPDIR="$workspace/tmp"
   shift
   exec codex exec --ignore-user-config "$@"
 fi
