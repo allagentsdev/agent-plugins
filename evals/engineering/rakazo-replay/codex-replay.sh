@@ -1,6 +1,7 @@
 #!/bin/sh
 # Put the selected instructions at the root of the fresh SDK workspace.
 set -eu
+codex_bin=${REPLAY_CODEX_BIN:?Set REPLAY_CODEX_BIN to a compatible Codex executable}
 if [ "${1:-}" = exec ]; then
   workspace=
   previous=
@@ -21,6 +22,6 @@ if [ "${1:-}" = exec ]; then
   mkdir "$workspace/tmp"
   export TMPDIR="$workspace/tmp"
   shift
-  exec codex exec --ignore-user-config "$@"
+  exec "$codex_bin" exec --ignore-user-config "$@"
 fi
-exec codex "$@"
+exec "$codex_bin" "$@"

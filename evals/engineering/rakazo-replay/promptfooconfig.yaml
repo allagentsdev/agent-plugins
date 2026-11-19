@@ -10,8 +10,10 @@ providers:
     config: &replay
       delegate:
         id: openai:codex-sdk
+        env:
+          REPLAY_CODEX_BIN: "{{env.REPLAY_CODEX_BIN}}"
         config:
-          model: '{{ env.CODEX_MODEL | default("gpt-6.1-sol") }}'
+          model: '{{ env.CODEX_MODEL | default("gpt-6.2-sol") }}'
           model_reasoning_effort: medium
           sandbox_mode: workspace-write
           approval_policy: never
