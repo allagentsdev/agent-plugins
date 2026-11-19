@@ -23,6 +23,18 @@ providers:
       maxRetries: 0
 
 defaultTest:
+  options:
+    provider:
+      id: openai:codex-sdk
+      config:
+        model: '{{ env.CODEX_JUDGE_MODEL | default("gpt-5.6-luna") }}'
+        model_reasoning_effort: medium
+        working_dir: ./workspace
+        sandbox_mode: read-only
+        approval_policy: never
+        network_access_enabled: false
+        web_search_enabled: false
+        maxRetries: 0
   assert:
     - type: skill-used
       metric: compound-engineering-skill-read
@@ -32,17 +44,6 @@ defaultTest:
       value: file://assertions/workspace-reviewer-read.mjs
     - type: llm-rubric
       metric: proportionate-engineering-judgment
-      provider:
-        id: openai:codex-sdk
-        config:
-          model: '{{ env.CODEX_JUDGE_MODEL | default("gpt-5.6-luna") }}'
-          model_reasoning_effort: medium
-          working_dir: ./workspace
-          sandbox_mode: read-only
-          approval_policy: never
-          network_access_enabled: false
-          web_search_enabled: false
-          maxRetries: 0
       value: |
         Judge the candidate's engineering decision using only the supplied evidence and case criteria.
         Apply all material pass criteria and reject any listed failure condition present in the candidate.
