@@ -31,8 +31,9 @@ or create a separate authenticated bot.
 
 | Source | Purpose |
 | --- | --- |
-| [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Interface and design-system lead |
-| [Impeccable](https://github.com/pbakaus/impeccable) | Design vocabulary, interface critique, polish and responsive adaptation |
+| [UI UX Pro Max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Design-system discovery and style research |
+| [Emil Kowalski](https://github.com/emilkowalski/skills) | Interface-craft lead, animation, review, performance, UI stress checks and motion restraint |
+| [Stageshow by Benji Taylor](https://github.com/benjitaylor/skills) | Faux product UI stills, feature cards, bento grids and cursor demos |
 | [Remotion](https://github.com/remotion-dev/skills) | Composition, titles, overlays and rendering |
 | [Motion Design](https://github.com/LottieFiles/motion-design-skill) | Timing, easing, staging and choreography |
 | [DirectorSKILL](https://github.com/wuwangzhang1216/DirectorSKILL) | Story, shot coverage, blocking and continuity |
@@ -44,13 +45,17 @@ or create a separate authenticated bot.
 | [Official GSAP skills](https://github.com/greensock/gsap-skills) | Core, timelines, ScrollTrigger and React |
 | [Productivity](../../plugins/productivity) | Write Naturally |
 
-Impeccable is installed from the publisher's portable `.agents/` build, with its
-references and launchers unchanged. Choose it or UI UX Pro Max as the design
-lead for a brief, then use focused Impeccable commands on a named target, such as
-`$impeccable critique the pricing cards`, `$impeccable polish settings` or
-`$impeccable adapt the navigation` in Codex. Other agents use their own skill
-invocation syntax. Read existing `PRODUCT.md` and `DESIGN.md` first; Impeccable's
-`init` and `document` commands can capture missing product and design context.
+Emil is the default interface-craft lead; Stageshow supplies authored product
+illustrations. The declaration selects six focused Emil skills and Stageshow
+from their original publisher repositories, with references and helpers intact.
+Read existing `PRODUCT.md` and `DESIGN.md` first and preserve project constraints.
+Stageshow's scripted cursor demos illustrate UI; test real interactions separately.
+
+This recipe replaces Impeccable by owner preference, not because comparative
+quality testing established that it is dated. [Meng To’s November 18, 2026
+roundup](https://x.com/MengTo/status/2122984275566076395) still recommends it.
+Reviewed publisher commits: [Emil](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c)
+and [Stageshow](https://github.com/benjitaylor/skills/tree/299140fafd08df55a9c234e610c3f64af3f45531).
 
 Video Use has a root editing skill and a nested Manim skill. AllAgents' plugin
 discovery prefers the nested directory, so this recipe instead clones the
@@ -68,7 +73,6 @@ generate paid content.
 
 | Primitive | Separate setup |
 | --- | --- |
-| Impeccable | Its launcher uses a bundled engine or downloads it on first use; see the [upstream setup](https://github.com/pbakaus/impeccable#installation) for supported platforms and optional detector hooks/live mode. AllAgents installs the skill only; hooks and harness-level subagents need upstream setup. |
 | FFmpeg and ffprobe | Install through your operating-system package manager |
 | Remotion | Install Node.js and the project's Remotion/React packages; prepare its browser renderer |
 | Video Use | Install Python and its declared dependencies; transcription needs ElevenLabs API access |

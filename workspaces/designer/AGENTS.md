@@ -10,8 +10,11 @@ using its scripts or following its production workflow.
 
 | Work | Skill or source |
 | --- | --- |
-| Interfaces and design systems | `ui-ux-pro-max` |
-| Interface critique, polish and responsive adaptation | `impeccable` with `critique`, `audit`, `polish` or `adapt` |
+| Interface craft, component interactions and polish | `emil-design-eng` |
+| Focused motion work | `animate`, `review-animations`, `animation-performance` or `remove-animations` |
+| UI stress checks with extreme content and states | `break-ui` |
+| Faux product UI stills, feature cards, bento grids and cursor demos | `stageshow` |
+| Design-system discovery and style research | `ui-ux-pro-max` |
 | Story, shots, blocking and continuity | `cinematic-director` |
 | Video composition and rendering | `remotion-best-practices` and its relevant specialist skill |
 | Tutorial editing, retakes, captions and cut decisions | Read `sources/video-use/SKILL.md`; use its original helpers with FFmpeg |
@@ -22,10 +25,10 @@ using its scripts or following its production workflow.
 | Positioning, campaigns and copy | `product-marketing`, `content-strategy`, `copywriting`, `ad-creative` |
 | Illustrated explainers | `baoyu-infographic` or `baoyu-comic`, when requested |
 
-For interface work, choose `ui-ux-pro-max` or `impeccable` as the design lead
-for the brief. Use Impeccable's focused commands for review or refinement of a
-named page or component. Read existing `PRODUCT.md` and `DESIGN.md` when present
-and preserve the project's design constraints.
+Use Emil as the default interface-craft lead and Stageshow for authored product
+illustrations. Read existing `PRODUCT.md` and `DESIGN.md` when present and
+preserve the project's design constraints. Stageshow's scripted cursor demos
+illustrate UI; verify real interactions separately in the product.
 
 The project root holds working material and deliverables. Treat
 `sources/video-use/` as an unchanged upstream reference. Read its root skill
