@@ -44,6 +44,7 @@ export REPLAY_AGENT_BROWSER="$inputs/bin/agent-browser"
 export REPLAY_CHROMIUM=/absolute/path/to/chrome
 suite=evals/engineering/rakazo-replay
 export REPLAY_CODEX_LAUNCHER="$PWD/$suite/codex-replay.sh"
+export ALLAGENTS_WORKSPACE_ROOT="$inputs/workspaces"
 bun run promptfoo validate config -c "$suite/promptfooconfig.yaml"
 bun run promptfoo eval -c "$suite/promptfooconfig.yaml" \
   --max-concurrency 1 --no-cache --no-share -o "$inputs/replay.json"
