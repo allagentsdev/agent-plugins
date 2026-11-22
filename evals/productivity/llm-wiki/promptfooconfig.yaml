@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: llm-wiki bulk-ingestion page decisions
+
+prompts:
+  - id: file://prompt.mjs:baseline
+    label: hermes-v2.1.0
+  - id: file://prompt.mjs:conceptGap
+    label: concept-gap-candidate
+
+providers:
+  - id: openai:codex-sdk
+    config:
+      model: '{{ env.CODEX_MODEL | default("gpt-6.1-sol") }}'
+      model_reasoning_effort: medium
+      sandbox_mode: read-only
+      approval_policy: never
+      network_access_enabled: false
+      web_search_enabled: false
+      maxRetries: 0
+
+defaultTest:
+  assert:
+    - type: javascript
+      metric: supported-page-decisions
+      value: file://assertions.mjs:checkDecisions
+
+tests: file://cases.yaml
