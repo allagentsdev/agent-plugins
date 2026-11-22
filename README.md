@@ -91,6 +91,8 @@ bun run eval:write-naturally
 
 For deterministic punctuation checks, use `bun run eval:write-naturally --filter-metadata group=punctuation`.
 
+The [LLM Wiki evals](evals/productivity/llm-wiki/README.md) compare the vendored Hermes skill with a candidate bulk-ingestion instruction.
+
 Evals use fictional data and your Codex connection. Set `CODEX_MODEL` and `CODEX_JUDGE_MODEL` to change the writer and grader.
 
 Compare the [Humanizer-inspired cases](https://github.com/blader/humanizer/blob/225a6f39ac85f76ee48dbad772ea4abe4ed6c9d8/SKILL.md) with and without the skill:
