@@ -30,7 +30,7 @@
     },
     {
       "name": "productivity",
-      "description": "Technical writing, Markdown wiki curation, and behavioral evals",
+      "description": "Clear technical writing with behavioral evaluation cases",
       "source": "./plugins/productivity"
     }
   ]

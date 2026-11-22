@@ -24,7 +24,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | --- | --- |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
 | [engineering](plugins/engineering) | Interactive diagrams, PR review, and read-only GitHub attention checks |
-| [productivity](plugins/productivity) | Technical writing, Markdown wiki curation, and behavioral evals |
+| [productivity](plugins/productivity) | Direct technical writing and behavioral evals |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
 
@@ -90,8 +90,6 @@ bun run eval:write-naturally
 ```
 
 For deterministic punctuation checks, use `bun run eval:write-naturally --filter-metadata group=punctuation`.
-
-The [LLM Wiki evals](evals/productivity/llm-wiki/README.md) compare the vendored Hermes skill with a candidate bulk-ingestion instruction.
 
 Evals use fictional data and your Codex connection. Set `CODEX_MODEL` and `CODEX_JUDGE_MODEL` to change the writer and grader.
 
