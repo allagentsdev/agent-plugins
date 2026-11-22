@@ -108,11 +108,14 @@
     passes_if: |
       Keep stable provider-side deduplication or an equally strong evidenced mechanism, explaining
       why rechecking approval cannot prevent the duplicate after the ambiguous timeout. Preserve
-      the approval contract and verify the visible payout count and distinct authorizations.
-      Remove or justify the factory independently from the safeguard.
+      the approval contract. Require verification of both observable outcomes: retrying one
+      authorization produces exactly one payout, and two distinct authorizations can each
+      produce a payout. Remove or justify the factory independently from the safeguard.
     fails_if: |
-      Remove the safeguard for brevity, substitute a second approval read for deduplication,
-      or retain the factory merely because a justified safeguard is nearby.
+      Omit either payout outcome. Mentioning that authorization IDs are unique does not verify
+      that separate authorizations both succeed. Fail if the candidate removes the safeguard for
+      brevity, substitutes a second approval read for deduplication, or retains the factory merely
+      because a justified safeguard is nearby.
 
 - description: Keep the browser test that exercises the changed boundary
   metadata: { group: synthetic }
