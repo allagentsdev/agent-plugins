@@ -24,7 +24,7 @@ Claude Code and Copilot CLI can use this repository's native marketplace manifes
 | --- | --- |
 | [deepwiki](plugins/deepwiki) | Public repository documentation tools and guidance |
 | [engineering](plugins/engineering) | Interactive diagrams, PR review, and read-only GitHub attention checks |
-| [productivity](plugins/productivity) | Direct technical writing and behavioral evals |
+| [productivity](plugins/productivity) | Technical writing, Markdown wiki curation, and behavioral evals |
 | [finance](plugins/finance) | Financial modeling guidance and an original fictional XLSX example |
 | [tradingview](plugins/tradingview) | TradingView market data MCP configuration |
 
