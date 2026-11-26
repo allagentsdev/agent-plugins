@@ -20,8 +20,9 @@ web access supplies the research tools. Each native declaration targets only `pi
 with `install: native`, while the portable sources inherit `universal` file
 installation. The two Compound Engineering distributions remain separate
 resources with independent destinations and lifecycles. Both follow the upstream
-default branch; Pi installs the upstream Git package directly. The npm packages
-remain pinned to reviewed versions.
+default branch; Pi installs the upstream Git package directly. Pi installs
+pi-subagents from npm's `latest` tag, while pi-web-access and pi-ask-user retain
+their reviewed version pins.
 
 ## Prerequisites
 
@@ -122,8 +123,34 @@ command. After installing or updating the package, run `/reload` or restart Pi.
 
 ## Update or remove
 
-The recipe pins reviewed npm package versions. To upgrade an npm package, change
-its pin in `.allagents/workspace.yaml`, review that release, then run a targeted update:
+If an existing workspace still declares `npm:pi-subagents@0.76.1`, remove the
+old managed package first. Changing the declaration alone can leave Pi using
+the old installed version until the next update.
+
+```sh
+allagents plugin uninstall npm:pi-subagents@0.76.1 --scope project
+```
+
+Add this entry back under `plugins` in `.allagents/workspace.yaml`, then
+reconcile it:
+
+```yaml
+- source: npm:pi-subagents
+  clients: [pi]
+  install: native
+```
+
+```sh
+allagents plugin update npm:pi-subagents --scope project
+```
+
+Restart Pi and try a background child. Version 0.76.1 fails before launch on
+Pi 1.2.0 and later because it expects Chord; the
+[upstream fix](https://github.com/nicobailon/pi-subagents/pull/2855) shipped in
+0.78.0. Future targeted updates pick up the current npm `latest` release.
+
+To upgrade a pinned npm package, change its pin in `.allagents/workspace.yaml`,
+review that release, then run a targeted update:
 
 ```sh
 allagents plugin update npm:pi-web-access --scope project

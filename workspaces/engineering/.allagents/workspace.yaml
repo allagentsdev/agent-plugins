@@ -39,14 +39,14 @@ plugins:
   # these packages separate from the universal file-mode skills above.
   # Save project trust and select native CE skills in Pi before initialization;
   # see ../README.md. Portable CE files otherwise shadow the native skills.
-  # npm packages retain reviewed pins; Compound Engineering follows upstream.
+  # pi-web-access and pi-ask-user retain reviewed pins.
   - source: npm:pi-web-access@0.37.0
     clients: [pi]
     install: native
   - source: git:github.com/EveryInc/compound-engineering-plugin
     clients: [pi]
     install: native
-  - source: npm:pi-subagents@0.76.1
+  - source: npm:pi-subagents
     clients: [pi]
     install: native
   - source: npm:pi-ask-user@0.16.0
